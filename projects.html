@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenny Okeke — Projects</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .proj-hero {
+      padding: calc(var(--nav-h) + 72px) 32px 72px;
+      text-align: center;
+      background: var(--bg);
+      position: relative;
+    }
+    .proj-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 100%, rgba(196,152,64,0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .proj-hero h1 {
+      font-size: clamp(56px, 9vw, 112px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      margin-bottom: 20px;
+    }
+    .proj-hero h1 em { font-style: italic; font-weight: 400; color: var(--green); }
+    .proj-hero p {
+      font-size: 16px;
+      color: var(--stone);
+      font-weight: 300;
+    }
+
+    /* FILTER TABS */
+    .filter-bar {
+      padding: 0 32px 48px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1.5px solid var(--border);
+      color: var(--stone);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(30,53,40,0.05);
+    }
+
+    /* PROJECT GRID */
+    .projects-section {
+      padding: 0 32px 96px;
+    }
+    .projects-grid {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0;
+      box-shadow: var(--shadow-xs);
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    .proj-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .proj-card-icon {
+      width: 200px; height: 200px;
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .proj-card-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .proj-card-type {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+    .proj-card-name {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--charcoal);
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .proj-card-divider {
+      width: 28px; height: 2px;
+      background: var(--amber);
+      margin: 14px auto;
+    }
+    .proj-card-desc {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--stone);
+      font-weight: 300;
+      flex: 1;
+      margin-bottom: 24px;
+    }
+    .proj-card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--amber-2);
+      border-bottom: 1px solid var(--amber-3);
+      padding-bottom: 2px;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+    .proj-card:hover .proj-card-btn { color: var(--green); border-color: var(--green); }
+
+    /* logo text styles */
+    .logo-ps { background: var(--green); color: var(--bg); font-size: 28px; font-weight: 900; font-family: var(--font-display); border-radius: 18px; }
+    .logo-disney { color: var(--green); font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+    .logo-airbnb { color: var(--amber-2); font-family: var(--font-display); font-size: 22px; font-weight: 700; }
+    .logo-ferrari { background: var(--charcoal); color: var(--amber); font-family: var(--font-display); font-size: 22px; font-weight: 700; border-radius: 6px; }
+    .logo-sacrificio { color: var(--charcoal); font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: 0.05em; line-height: 1.2; }
+    .logo-tona { background: var(--green); color: var(--bg); font-family: var(--font-display); font-size: 28px; font-weight: 900; letter-spacing: -0.02em; border-radius: 6px; }
+    .logo-dangote { color: var(--charcoal); font-family: var(--font-display); font-size: 22px; font-weight: 900; }
+    .logo-yja { color: var(--green); font-family: var(--font-display); font-size: 14px; font-weight: 700; line-height: 1.2; letter-spacing: 0.02em; }
+    .logo-icon { background: none; }
+    .proj-card-icon svg { width: 100%; height: 100%; }
+
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 580px) {
+      .projects-grid { grid-template-columns: 1fr; max-width: 360px; }
+      .proj-hero { padding: calc(var(--nav-h) + 48px) 20px 56px; }
+      .projects-section { padding: 0 20px 72px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <section class="proj-hero">
+      <h1 class="reveal reveal-delay-1"><em>Projects</em></h1>
+      <p class="reveal reveal-delay-2">Selected product, strategy, data analysis, and marketing projects</p>
+    </section>
+
+    <!-- ═══════════════ GRID ═══════════════ -->
+    <section class="projects-section">
+      <div class="projects-grid">
+
+        <a href="project-playstation.html" class="proj-card reveal">
+          <div class="proj-card-icon" style="overflow:visible;"><img src="brand_assets/playstation-logo.png" alt="PlayStation" style="transform:scale(1.4);" /></div>
+          <p class="proj-card-type">Product Strategy</p>
+          <p class="proj-card-name">PlayStation iOS App</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Redesigning the PlayStation mobile experience to drive engagement beyond the console.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-disney.html" class="proj-card reveal reveal-delay-1">
+          <div class="proj-card-icon"><img src="brand_assets/disney-plus-logo.png" alt="Disney+" /></div>
+          <p class="proj-card-type">Brand Strategy</p>
+          <p class="proj-card-name">Disney+</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Deepening Disney+'s brand relevance through audit and strategic recommendations.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-airbnb.html" class="proj-card reveal reveal-delay-2">
+          <div class="proj-card-icon"><img src="brand_assets/airbnb-logo.png" alt="Airbnb" /></div>
+          <p class="proj-card-type">Growth Strategy</p>
+          <p class="proj-card-name">Airbnb Extended</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Expanding Airbnb's platform strategy to capture the extended-stay housing market.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-preformance.html" class="proj-card reveal">
+          <div class="proj-card-icon logo-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <!-- Phone body -->
+              <rect x="11" y="3" width="22" height="38" rx="4" fill="var(--green)" />
+              <rect x="13" y="7" width="18" height="26" rx="2" fill="var(--bg)" />
+              <!-- Home bar -->
+              <rect x="18" y="36" width="8" height="2" rx="1" fill="var(--bg)" opacity="0.6"/>
+              <!-- Cross / therapy symbol on screen -->
+              <rect x="20" y="13" width="4" height="12" rx="1.5" fill="var(--green)"/>
+              <rect x="16" y="17" width="12" height="4" rx="1.5" fill="var(--green)"/>
+            </svg>
+          </div>
+          <p class="proj-card-type">New Venture Strategy</p>
+          <p class="proj-card-name">PreFormance Therapy & Fitness</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Designing an AI-powered physical therapy platform to make rehab more accessible.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-sql-llm.html" class="proj-card reveal reveal-delay-1">
+          <div class="proj-card-icon logo-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <!-- Full 3-tier database -->
+              <ellipse cx="20" cy="6" rx="14" ry="4" stroke="var(--green)" stroke-width="2" fill="none"/>
+              <line x1="6" y1="6" x2="6" y2="37" stroke="var(--green)" stroke-width="2"/>
+              <line x1="34" y1="6" x2="34" y2="37" stroke="var(--green)" stroke-width="2"/>
+              <path d="M6 17 A14 4 0 0 1 34 17" stroke="var(--green)" stroke-width="2" fill="none"/>
+              <path d="M6 28 A14 4 0 0 1 34 28" stroke="var(--green)" stroke-width="2" fill="none"/>
+              <ellipse cx="20" cy="37" rx="14" ry="4" stroke="var(--green)" stroke-width="2" fill="none"/>
+              <!-- Tier dots -->
+              <circle cx="10" cy="11.5" r="1.5" fill="var(--green)"/>
+              <circle cx="10" cy="22.5" r="1.5" fill="var(--green)"/>
+              <circle cx="10" cy="32.5" r="1.5" fill="var(--green)"/>
+              <!-- Gear badge background -->
+              <circle cx="34" cy="33" r="10" fill="var(--bg)"/>
+              <!-- Gear body (6-tooth polygon) -->
+              <polygon points="42,33 39.2,36 38,39.9 34,39 30,39.9 28.8,36 26,33 28.8,30 30,26.1 34,27 38,26.1 39.2,30"
+                       stroke="var(--amber)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+              <!-- Gear hub -->
+              <circle cx="34" cy="33" r="3" stroke="var(--amber)" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <p class="proj-card-type">AI & Analytics</p>
+          <p class="proj-card-name">SQL/LLM Evaluation</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Benchmarking leading LLMs for SQL analytics across accuracy, usability, privacy, and cost.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-ai-sports.html" class="proj-card reveal reveal-delay-1">
+          <div class="proj-card-icon logo-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <!-- Camera body -->
+              <rect x="3" y="13" width="28" height="20" rx="3" fill="var(--green)"/>
+              <!-- Viewfinder triangle -->
+              <path d="M32 18 L41 13 L41 31 L32 26 Z" fill="var(--green)" opacity="0.75"/>
+              <!-- Basketball as lens -->
+              <circle cx="17" cy="23" r="7" fill="var(--amber)" opacity="0.85"/>
+              <!-- Basketball seams -->
+              <line x1="10" y1="23" x2="24" y2="23" stroke="var(--charcoal)" stroke-width="1" opacity="0.6"/>
+              <path d="M14 17 Q17 23 14 29" stroke="var(--charcoal)" stroke-width="1" fill="none" opacity="0.6"/>
+              <path d="M20 17 Q17 23 20 29" stroke="var(--charcoal)" stroke-width="1" fill="none" opacity="0.6"/>
+            </svg>
+          </div>
+          <p class="proj-card-type">AI Strategy</p>
+          <p class="proj-card-name">AI Sports Production</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Reimagining live sports production through AI-driven automation and scale.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-ai-diffusion.html" class="proj-card reveal reveal-delay-2">
+          <div class="proj-card-icon logo-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <!-- Left brain half - bumpy organic outline -->
+              <path d="M22 37 C20 37 17 37 15 35 C13 33 12 31 13 29 C11 28 9 26 9 23 C9 20 10 18 12 16 C11 14 11 11 13 9 C15 7 18 7 20 8 C21 7 22 7 22 7"
+                    stroke="var(--green)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Organic fold lines - left (evenly spaced, identical shape) -->
+              <path d="M22 13 C18 11 15 14 16 17" stroke="var(--green)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <path d="M22 21 C18 19 15 22 16 25" stroke="var(--green)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <path d="M22 29 C18 27 15 30 16 33" stroke="var(--green)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <!-- Right brain half - clean outline -->
+              <path d="M22 7 C22 7 23 7 24 8 C26 7 29 7 31 9 C33 11 33 14 32 16 C34 18 35 20 35 23 C35 26 33 28 31 29 C32 31 31 33 29 35 C27 37 24 37 22 37"
+                    stroke="var(--green)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- Centre divider -->
+              <line x1="22" y1="7" x2="22" y2="37" stroke="var(--green)" stroke-width="1.5"/>
+              <!-- Circuit traces - right (equal top/bottom segment lengths of 3) -->
+              <line x1="22" y1="13" x2="25" y2="13" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="25" y1="13" x2="25" y2="17" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="25" y1="17" x2="28" y2="17" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="28" cy="17" r="2" fill="var(--amber)"/>
+              <line x1="22" y1="21" x2="25" y2="21" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="25" y1="21" x2="25" y2="25" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="25" y1="25" x2="28" y2="25" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="28" cy="25" r="2" fill="var(--amber)"/>
+              <line x1="22" y1="29" x2="25" y2="29" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="25" y1="29" x2="25" y2="33" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <line x1="25" y1="33" x2="28" y2="33" stroke="var(--amber)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="28" cy="33" r="2" fill="var(--amber)"/>
+            </svg>
+          </div>
+          <p class="proj-card-type">AI Adoption Strategy</p>
+          <p class="proj-card-name">AI Diffusion</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Diagnosing AI adoption barriers and recommending strategies for responsible use.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-team-performance.html" class="proj-card reveal reveal-delay-2">
+          <div class="proj-card-icon logo-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <!-- Left person -->
+              <circle cx="10" cy="14" r="4" fill="var(--green)" opacity="0.7"/>
+              <path d="M4 26 Q4 20 10 20 Q16 20 16 26" fill="var(--green)" opacity="0.7"/>
+              <!-- Right person -->
+              <circle cx="34" cy="14" r="4" fill="var(--green)" opacity="0.7"/>
+              <path d="M28 26 Q28 20 34 20 Q40 20 40 26" fill="var(--green)" opacity="0.7"/>
+              <!-- Center person -->
+              <circle cx="22" cy="12" r="4" fill="var(--green)"/>
+              <path d="M16 24 Q16 18 22 18 Q28 18 28 24" fill="var(--green)"/>
+              <!-- Connecting lines -->
+              <line x1="14" y1="17" x2="19" y2="15" stroke="var(--green)" stroke-width="1.5" opacity="0.5"/>
+              <line x1="25" y1="15" x2="30" y2="17" stroke="var(--green)" stroke-width="1.5" opacity="0.5"/>
+              <!-- Upward trend arrow -->
+              <polyline points="6,38 14,32 22,34 34,27" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              <polyline points="30,25 34,27 32,31" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <p class="proj-card-type">People Analytics</p>
+          <p class="proj-card-name">Team Performance Analytics</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Improving team performance through data-driven insights and analytics frameworks.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-vessel-robot.html" class="proj-card reveal">
+          <div class="proj-card-icon logo-icon">
+            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+              <!-- Antenna -->
+              <line x1="22" y1="9" x2="22" y2="5" stroke="var(--green)" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="22" cy="4" r="2.5" fill="var(--amber)"/>
+              <!-- Head -->
+              <rect x="9" y="9" width="26" height="20" rx="3" stroke="var(--green)" stroke-width="2" fill="none"/>
+              <!-- Sensor eyes -->
+              <circle cx="17" cy="19" r="3.5" stroke="var(--amber)" stroke-width="1.5" fill="rgba(196,152,64,0.15)"/>
+              <circle cx="27" cy="19" r="3.5" stroke="var(--amber)" stroke-width="1.5" fill="rgba(196,152,64,0.15)"/>
+              <circle cx="17" cy="19" r="1.5" fill="var(--amber)"/>
+              <circle cx="27" cy="19" r="1.5" fill="var(--amber)"/>
+              <!-- Neck -->
+              <rect x="18" y="29" width="8" height="4" rx="1" stroke="var(--green)" stroke-width="1.5" fill="none"/>
+              <!-- Track base -->
+              <rect x="7" y="33" width="30" height="7" rx="3.5" stroke="var(--green)" stroke-width="1.5" fill="none"/>
+              <!-- Wheels -->
+              <circle cx="13" cy="36.5" r="2" fill="var(--green)" opacity="0.35"/>
+              <circle cx="22" cy="36.5" r="2" fill="var(--green)" opacity="0.35"/>
+              <circle cx="31" cy="36.5" r="2" fill="var(--green)" opacity="0.35"/>
+            </svg>
+          </div>
+          <p class="proj-card-type">Robotics Strategy</p>
+          <p class="proj-card-name">Vessel Inspection Robot</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Engineering an autonomous vessel inspection and repair robot for industrial safety.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-ferrari.html" class="proj-card reveal">
+          <div class="proj-card-icon"><img src="brand_assets/ferrari-logo.png" alt="Ferrari" /></div>
+          <p class="proj-card-type">Corporate Strategy</p>
+          <p class="proj-card-name">Ferrari</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Evaluating Ferrari's long-term strategy to balance growth with brand exclusivity.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-sacrificio.html" class="proj-card reveal reveal-delay-1">
+          <div class="proj-card-icon"><img src="brand_assets/sacrificio-logo.png" alt="Sacrificio Mezcal" /></div>
+          <p class="proj-card-type">Digital Marketing Strategy</p>
+          <p class="proj-card-name">Sacrificio Mezcal</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Reframing Mezcal Sacrificio's brand strategy through digital channels.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-tona.html" class="proj-card reveal reveal-delay-2">
+          <div class="proj-card-icon"><img src="brand_assets/tona-logo.png" alt="Tona Activewear" /></div>
+          <p class="proj-card-type">Design Thinking</p>
+          <p class="proj-card-name">Tona Activewear</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Validating TONA's product and brand strategy through experiential retail pop-ups.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-dangote.html" class="proj-card reveal">
+          <div class="proj-card-icon"><img src="brand_assets/dangote-logo.png" alt="Dangote" /></div>
+          <p class="proj-card-type">Global Operations Strategy</p>
+          <p class="proj-card-name">Dangote Group</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Assessing options for operating sustainably amid political and economic volatility.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+        <a href="project-youth-justice.html" class="proj-card reveal reveal-delay-1">
+          <div class="proj-card-icon"><img src="brand_assets/youth-justice-logo.png" alt="Youth Justice Alliance" /></div>
+          <p class="proj-card-type">Nonprofit Strategy</p>
+          <p class="proj-card-name">Youth Justice Alliance</p>
+          <div class="proj-card-divider"></div>
+          <p class="proj-card-desc">Developing data-driven investment and CRM recommendations for a nonprofit organization.</p>
+          <span class="proj-card-btn">→ View Project</span>
+        </a>
+
+
+      </div>
+    </section>
+
+  </main>
+
+  <script src="nav.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

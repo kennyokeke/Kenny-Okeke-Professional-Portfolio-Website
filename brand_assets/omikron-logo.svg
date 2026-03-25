@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 210">
+  <!-- Outer diamond -->
+  <polygon points="100,12 188,88 100,164 12,88"
+           fill="none" stroke="#3EC6E8" stroke-width="5.5" stroke-linejoin="round"/>
+  <!-- Middle diamond -->
+  <polygon points="100,32 164,88 100,144 36,88"
+           fill="none" stroke="#3EC6E8" stroke-width="5.5" stroke-linejoin="round"/>
+  <!-- Inner diamond -->
+  <polygon points="100,52 140,88 100,124 60,88"
+           fill="none" stroke="#3EC6E8" stroke-width="5.5" stroke-linejoin="round"/>
+  <!-- OMIKRON text -->
+  <text x="100" y="188"
+        font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="900" font-size="28" fill="#3EC6E8"
+        text-anchor="middle" letter-spacing="1">OMIKRON</text>
+  <!-- ROBOTICS text -->
+  <text x="100" y="210"
+        font-family="'Arial Black', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="900" font-size="24" fill="#3EC6E8"
+        text-anchor="middle" letter-spacing="1">ROBOTICS</text>
+</svg>

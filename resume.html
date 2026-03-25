@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenny Okeke — Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .resume-hero {
+      padding: calc(var(--nav-h) + 80px) 32px 80px;
+      text-align: center;
+      background: var(--bg);
+      position: relative;
+    }
+    .resume-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 50% 100%, rgba(30,53,40,0.05) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .resume-hero h1 {
+      font-size: clamp(56px, 9vw, 112px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      margin-bottom: 20px;
+    }
+    .resume-hero h1 em { font-style: italic; font-weight: 400; color: var(--green); }
+    .resume-hero p {
+      font-size: 16px;
+      color: var(--stone);
+      font-weight: 300;
+      margin-bottom: 40px;
+    }
+    .resume-cta-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 640px) {
+      .resume-hero { padding: calc(var(--nav-h) + 48px) 20px 56px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="resume-hero">
+      <h1 class="reveal reveal-delay-1"><em>Resume</em></h1>
+      <p class="reveal reveal-delay-2">A summary of my experience, education, and credentials.</p>
+      <div class="resume-cta-wrap reveal reveal-delay-3">
+        <a href="files/Okeke_Kenny_Resume.pdf" target="_blank" class="btn btn-green" style="padding: 14px 32px; font-size: 14px;">→ View Resume (PDF)</a>
+        <a href="about.html" class="btn btn-ghost">← Full About Page</a>
+      </div>
+    </section>
+  </main>
+  <script src="nav.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenny Okeke — About</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ── ABOUT HERO ── */
+    .about-hero {
+      padding: calc(var(--nav-h) + 64px) 32px 24px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 80px;
+      align-items: end;
+    }
+    .about-hero-text { padding-bottom: 64px; }
+    .about-hero h1 {
+      font-size: clamp(52px, 8vw, 100px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      margin-bottom: 28px;
+    }
+    .about-hero h1 em { font-style: italic; font-weight: 400; color: var(--green); }
+    .about-hero-lead {
+      font-size: 16px;
+      line-height: 1.8;
+      color: #4A4640;
+      font-weight: 300;
+      max-width: 500px;
+    }
+    .about-photo-wrap {
+      position: relative;
+      align-self: end;
+      isolation: isolate;
+    }
+    .about-photo {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+      display: block;
+    }
+    .about-photo-frame {
+      position: absolute;
+      inset: 14px 14px -14px -14px;
+      border: 2px solid rgba(196,152,64,0.35);
+      border-radius: calc(var(--radius-xl) + 4px) calc(var(--radius-xl) + 4px) 4px 4px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .about-photo { position: relative; z-index: 1; }
+
+    /* ── CONTENT SECTIONS ── */
+    .about-content { margin-top: 0; }
+    .about-section {
+      padding: 80px 32px;
+      border-bottom: 1px solid var(--border-2);
+      background: var(--surface);
+      position: relative;
+      z-index: 1;
+    }
+    .about-section:nth-child(even) { background: var(--bg); }
+    .about-section-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 72px;
+      align-items: center;
+    }
+    .about-section-label {
+      font-family: var(--font-display);
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 700;
+      color: var(--green);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .about-section-body {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #38352F;
+      font-weight: 300;
+    }
+    .about-section-body p + p { margin-top: 20px; }
+    .about-section-body strong { font-weight: 500; color: var(--charcoal); }
+    .about-section-body em { font-style: italic; }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+      margin-top: 8px;
+    }
+    .skill-item {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+    }
+    .skill-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .skill-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .skill-desc {
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--stone);
+      font-weight: 300;
+    }
+
+    /* ── EDUCATION ── */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .edu-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 12px;
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+    }
+    .edu-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .edu-icon {
+      width: 100px; height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .edu-icon img { width: 100%; height: 100%; object-fit: contain; }
+    .edu-icon-ut { background: none; }
+    .edu-icon-ua { background: none; }
+    .edu-institution {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--charcoal);
+      line-height: 1.2;
+    }
+    .edu-school {
+      font-size: 12px;
+      color: var(--stone);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+    .edu-degree {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--green);
+    }
+    .edu-note {
+      font-size: 12px;
+      color: var(--stone);
+      font-style: italic;
+    }
+
+    /* ── CERTIFICATIONS ── */
+    .cert-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .cert-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+    }
+    .cert-logo {
+      width: 100px; height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .cert-logo img { width: 100%; height: 100%; object-fit: contain; }
+    .cert-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .cert-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--charcoal);
+    }
+    .cert-issuer {
+      font-size: 13px;
+      color: var(--stone);
+      font-weight: 400;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .about-hero { grid-template-columns: 1fr; gap: 48px; }
+      .about-photo-wrap { max-width: 320px; }
+      .about-section-inner { grid-template-columns: 1fr; gap: 24px; }
+      .about-section-label { position: static; }
+      .edu-grid, .cert-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .about-hero { padding: calc(var(--nav-h) + 40px) 20px 0; }
+      .about-section { padding: 56px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <div class="about-hero">
+      <div class="about-hero-text reveal">
+        <h1><em>About</em><br>Kenny Okeke</h1>
+        <p class="about-hero-lead">I'm a Product Manager with a background in mechanical engineering, consulting, and an MBA, focused on building products that operate at scale in complex, real-world environments. My path into product has been shaped by hands-on execution, customer problem-solving, and structured decision-making across technical and business contexts.</p>
+      </div>
+      <div class="about-photo-wrap reveal reveal-delay-2">
+        <img src="brand_assets/picture.JPG" alt="Kenny Okeke" class="about-photo">
+        <div class="about-photo-frame"></div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CONTENT ═══════════════ -->
+    <div class="about-content">
+
+      <!-- Professional Foundation -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">Professional Foundation</h2>
+          <div class="about-section-body reveal reveal-delay-1">
+            <p>My professional experience spans engineering, consulting, and project-based roles, where much of my work centered on solving real client problems within practical constraints. I've led <strong>50+ projects and initiatives</strong> with a total portfolio of <strong>$10M+ end-to-end</strong>, working across <strong>15+ cross-functional teams</strong> and covering early definition, execution, and close-out.</p>
+            <p>In consulting environments, I partnered closely with customers to understand their needs and clarify ambiguous requirements, translating those needs into solutions delivered across diverse teams. This often meant working across technical and non-technical stakeholders, aligning expectations, timelines, and priorities, and ensuring solutions were grounded in operational reality and client value.</p>
+            <p>Across these roles, I also spent time on the client side of engagements, where I was responsible for specifying requirements and articulating needs. Experiencing work from this perspective reinforced how critical clear problem definition and shared understanding are to successful outcomes, strengthening how I approach collaboration and execution today.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- The Shift to Product -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">The Shift to Product</h2>
+          <div class="about-section-body reveal reveal-delay-1">
+            <p>Over time, I began to recognize a consistent pattern in the work I gravitated toward. Across my roles, I was drawn to solving customer problems, making decisions under uncertainty, and aligning teams around a clear direction. <strong>I was already working as a Product Manager.</strong></p>
+            <p>Outside of formal work settings, conversations centered on technology and how products are designed and experienced helped crystallize this realization. I realized that my way of thinking extended beyond my role and into how I engaged with the technology I used every day. I became increasingly interested not just in using technology, but in the systems and design decisions behind the tools themselves.</p>
+            <p>Rather than viewing product management as a transition, I came to see it as a formalization of responsibilities I had already taken on, combined with a desire to build technology-driven products I genuinely care about. I pursued an MBA to sharpen my judgment through structured decision-making, data analysis, and evaluating tradeoffs across customers, teams, and scale — allowing me to operate more intentionally as a product manager in technical environments.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Product Approach -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">My Product Approach</h2>
+          <div class="about-section-body reveal reveal-delay-1">
+            <p>I view product management as operating at the intersection of <strong>desirability, feasibility, and viability</strong>. Strong product decisions sit where customers genuinely want a solution, technology can realistically support it, and the business can sustain it over time.</p>
+            <p>In practice, I ground decisions in customer insight to understand desirability, partner closely with engineering to assess feasibility, and evaluate options through the lens of business impact and scale to ensure viability. My role is to navigate the tradeoffs between these dimensions and bring clarity when priorities compete.</p>
+            <p>Working in this space requires comfort with ambiguity and accountability for decisions. I focus on making calls that hold up across customer needs, technical realities, and business constraints, while keeping teams aligned around a shared direction as work evolves.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">Skills</h2>
+          <div class="reveal reveal-delay-1">
+            <div class="skills-grid">
+              <div class="skill-item">
+                <p class="skill-name">Product Strategy</p>
+                <p class="skill-desc">Grounding decisions in clear problem definition and long-term impact, aligning customer needs with business objectives and technical realities.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">User Research</p>
+                <p class="skill-desc">Conducting interviews, site visits, and observation to uncover patterns across users and translate qualitative insight into clear product direction.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Data Analysis</p>
+                <p class="skill-desc">Excel, R, SQL, and Tableau — analyzing datasets to validate hypotheses, identify gaps, and quantify tradeoffs that connect to customer and business context.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Roadmapping</p>
+                <p class="skill-desc">Sequencing work around impact, dependencies, and constraints while maintaining flexibility — providing clarity on direction without losing focus.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Prototyping</p>
+                <p class="skill-desc">Exploring ideas quickly with low-fidelity concepts to test assumptions, gather feedback, and align stakeholders before committing significant resources.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Stakeholder Alignment</p>
+                <p class="skill-desc">Translating insights into decision-ready recommendations and aligning diverse teams around a shared direction through clear communication.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Education -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">Education</h2>
+          <div class="reveal reveal-delay-1">
+            <div class="edu-grid">
+              <div class="edu-card edu-card-ut">
+                <div class="edu-icon edu-icon-ut" style="overflow:visible;"><img src="brand_assets/Texas_Longhorns_logo.svg.png" alt="UT Austin" style="transform:scale(2.1);"></div>
+                <p class="edu-institution">The University of Texas at Austin</p>
+                <p class="edu-school">McCombs School of Business</p>
+                <p class="edu-degree">Master of Business Administration</p>
+                <p class="edu-note">Product Management and AI Strategy Concentration</p>
+              </div>
+              <div class="edu-card edu-card-ua">
+                <div class="edu-icon edu-icon-ua"><img src="brand_assets/Golden_Bears_Logo.png" alt="University of Alberta"></div>
+                <p class="edu-institution">The University of Alberta</p>
+                <p class="edu-school">Faculty of Engineering</p>
+                <p class="edu-degree">Bachelor of Science in Mechanical Engineering</p>
+                <p class="edu-note">Graduated with Distinction</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">Certifications</h2>
+          <div class="reveal reveal-delay-1">
+            <div class="cert-grid">
+              <div class="cert-card">
+                <div class="cert-logo"><img src="brand_assets/PMI-Symbol.png" alt="PMI"></div>
+                <p class="cert-name">Project Management Professional (PMP)</p>
+                <p class="cert-issuer">Project Management Institute (PMI)</p>
+              </div>
+              <div class="cert-card">
+                <div class="cert-logo"><img src="brand_assets/pragmatic-institute-icon.png" alt="Pragmatic Institute"></div>
+                <p class="cert-name">Product Management</p>
+                <p class="cert-issuer">Pragmatic Institute</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /about-content -->
+  </main>
+
+  <script src="nav.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
