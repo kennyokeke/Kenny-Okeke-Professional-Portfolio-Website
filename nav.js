@@ -57,6 +57,9 @@
       </a>
     </div>
   </div>
+  <div style="border-top: 1px solid rgba(255,255,255,0.08); margin-top: 48px; padding-top: 24px; text-align: center; font-size: 12px; color: rgba(255,255,255,0.3); letter-spacing: 0.04em;">
+    &copy; 2026 Kenny Okeke. All rights reserved.
+  </div>
 </footer>`;
 
   // Inject nav before first child of body
