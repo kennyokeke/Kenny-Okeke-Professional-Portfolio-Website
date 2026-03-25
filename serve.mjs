@@ -24,13 +24,19 @@ const MIME = {
 };
 
 http.createServer((req, res) => {
-  let filePath = path.join(ROOT, req.url === '/' ? 'home.html' : req.url);
-  const ext = path.extname(filePath);
+  let urlPath = req.url.split('?')[0];
+  let filePath = path.join(ROOT, urlPath);
+
+  // If no extension, try serving index.html from that directory
+  if (!path.extname(filePath)) {
+    filePath = path.join(filePath, 'index.html');
+  }
 
   if (!fs.existsSync(filePath)) {
     res.writeHead(404); res.end('Not found'); return;
   }
 
+  const ext = path.extname(filePath);
   res.writeHead(200, { 'Content-Type': MIME[ext] || 'text/plain' });
   fs.createReadStream(filePath).pipe(res);
 }).listen(PORT, () => {

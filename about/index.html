@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kenny Okeke — About</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="/styles.css">
@@ -218,8 +219,10 @@
 
     /* Responsive */
     @media (max-width: 900px) {
-      .about-hero { grid-template-columns: 1fr; gap: 48px; }
-      .about-photo-wrap { max-width: 320px; }
+      .about-hero { grid-template-columns: 1fr; gap: 16px; padding-bottom: 48px; position: relative; z-index: 2; }
+      .about-hero-text { padding-bottom: 0; }
+      .about-photo-wrap { max-width: 280px; margin: 14px auto 20px; overflow: visible; }
+      .about-photo-frame { inset: 14px 14px -14px -14px; }
       .about-section-inner { grid-template-columns: 1fr; gap: 24px; }
       .about-section-label { position: static; }
       .edu-grid, .cert-grid { grid-template-columns: 1fr; }
@@ -293,27 +296,59 @@
             <div class="skills-grid">
               <div class="skill-item">
                 <p class="skill-name">Product Strategy</p>
-                <p class="skill-desc">Grounding decisions in clear problem definition and long-term impact, aligning customer needs with business objectives and technical realities.</p>
+                <p class="skill-desc">Grounding decisions in clear problem definition, aligning customer needs with business objectives and technical realities.</p>
               </div>
               <div class="skill-item">
-                <p class="skill-name">User Research</p>
-                <p class="skill-desc">Conducting interviews, site visits, and observation to uncover patterns across users and translate qualitative insight into clear product direction.</p>
+                <p class="skill-name">Requirement Definition</p>
+                <p class="skill-desc">Translating ambiguous customer needs into structured, actionable requirements that bridge business intent and technical execution.</p>
               </div>
               <div class="skill-item">
-                <p class="skill-name">Data Analysis</p>
-                <p class="skill-desc">Excel, R, SQL, and Tableau — analyzing datasets to validate hypotheses, identify gaps, and quantify tradeoffs that connect to customer and business context.</p>
+                <p class="skill-name">Feature Prioritization</p>
+                <p class="skill-desc">Evaluating opportunities by impact, effort, and strategic fit to make clear tradeoff decisions that keep teams focused on what matters.</p>
               </div>
               <div class="skill-item">
                 <p class="skill-name">Roadmapping</p>
-                <p class="skill-desc">Sequencing work around impact, dependencies, and constraints while maintaining flexibility — providing clarity on direction without losing focus.</p>
+                <p class="skill-desc">Sequencing work around impact, dependencies, and constraints to provide clarity on direction without sacrificing adaptability.</p>
               </div>
               <div class="skill-item">
-                <p class="skill-name">Prototyping</p>
-                <p class="skill-desc">Exploring ideas quickly with low-fidelity concepts to test assumptions, gather feedback, and align stakeholders before committing significant resources.</p>
+                <p class="skill-name">Stakeholder Management</p>
+                <p class="skill-desc">Building relationships, managing expectations, and navigating competing priorities across technical and business stakeholders throughout the project lifecycle.</p>
               </div>
               <div class="skill-item">
                 <p class="skill-name">Stakeholder Alignment</p>
-                <p class="skill-desc">Translating insights into decision-ready recommendations and aligning diverse teams around a shared direction through clear communication.</p>
+                <p class="skill-desc">Translating insights into decision-ready recommendations and aligning diverse teams around a shared direction.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">User Research</p>
+                <p class="skill-desc">Conducting interviews and observation to uncover patterns and translate qualitative insight into clear product direction.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Product Metrics</p>
+                <p class="skill-desc">Defining success metrics and KPIs that reflect real user and business outcomes, and using them to evaluate whether decisions are actually working.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">A/B Testing</p>
+                <p class="skill-desc">Designing controlled experiments to validate product decisions with real user data, reducing guesswork and building confidence before full rollout.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Data Analysis</p>
+                <p class="skill-desc">Using Excel, R, SQL, and Tableau to analyze datasets, validate hypotheses, and quantify tradeoffs tied to customer and business context.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Prototyping</p>
+                <p class="skill-desc">Building low-fidelity concepts to test assumptions, gather feedback, and align stakeholders before committing resources.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Agile Methodologies</p>
+                <p class="skill-desc">Managing backlogs, sprints, and cross-team workflows to keep delivery organized and progress visible across stakeholders.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">AI/LLM Tools</p>
+                <p class="skill-desc">Applying large language models and AI tooling to accelerate research, prototyping, and analysis across the product development cycle.</p>
+              </div>
+              <div class="skill-item">
+                <p class="skill-name">Cloud Infrastructure</p>
+                <p class="skill-desc">Working with cloud infrastructure fundamentals to collaborate effectively with engineering teams on architecture and deployment decisions.</p>
               </div>
             </div>
           </div>

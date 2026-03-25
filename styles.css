@@ -419,9 +419,10 @@ h1, h2, h3, h4 {
 /* === RESPONSIVE === */
 @media (max-width: 768px) {
   :root { --nav-h: 64px; }
-  .nav-inner { padding: 0 20px; gap: 16px; }
+  .nav-inner { padding: 0 16px; gap: 12px; }
   .nav-links { gap: 20px; }
   .nav-links a { font-size: 12px; }
+  .nav-link[href="/"] { display: none; }
   .section { padding: 64px 20px; }
   .section-narrow { padding: 56px 20px; }
   .detail-inner { grid-template-columns: 1fr; gap: 24px; }
@@ -432,8 +433,10 @@ h1, h2, h3, h4 {
 }
 
 @media (max-width: 480px) {
-  .nav-links { gap: 12px; }
-  .nav-links a { font-size: 11px; letter-spacing: 0.02em; }
+  .nav-inner { gap: 10px; }
+  .nav-link { font-size: 11px; letter-spacing: 0.02em; }
   .page-hero { padding: calc(var(--nav-h) + 40px) 20px 48px; }
   .detail-section { padding: 56px 20px; }
+  .page-hero-actions { flex-direction: column; padding: 0 24px; }
+  .page-hero-actions .btn { width: 100%; justify-content: center; }
 }
