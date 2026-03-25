@@ -3,26 +3,23 @@
    ============================================================ */
 
 (function () {
-  const path = window.location.pathname.split('/').pop() || 'home.html';
+  const path = window.location.pathname;
 
   function active(href) {
-    if (href === 'home.html' && (path === '' || path === 'home.html')) return ' active';
-    if (href === 'about.html' && path === 'about.html') return ' active';
-    if (href === 'experience.html' && path.startsWith('experience')) return ' active';
-    if (href === 'projects.html' && path.startsWith('project')) return ' active';
-    if (href === 'resume.html' && path === 'resume.html') return ' active';
+    if (href === '/' && (path === '/' || path === '/index.html')) return ' active';
+    if (href !== '/' && path.startsWith(href)) return ' active';
     return '';
   }
 
   const nav = `
 <nav class="nav" id="site-nav">
   <div class="nav-inner">
-    <a href="home.html" class="nav-logo" aria-label="Home">KO</a>
-    <a href="home.html" class="nav-link${active('home.html')}">Home</a>
-    <a href="about.html" class="nav-link${active('about.html')}">About</a>
-    <a href="experience.html" class="nav-link${active('experience.html')}">Experience</a>
-    <a href="projects.html" class="nav-link${active('projects.html')}">Projects</a>
-    <a href="resume.html" class="nav-link${active('resume.html')}">Resume</a>
+    <a href="/" class="nav-logo" aria-label="Home">KO</a>
+    <a href="/" class="nav-link${active('/')}">Home</a>
+    <a href="/about" class="nav-link${active('/about')}">About</a>
+    <a href="/experience" class="nav-link${active('/experience')}">Experience</a>
+    <a href="/projects" class="nav-link${active('/projects')}">Projects</a>
+    <a href="/resume" class="nav-link${active('/resume')}">Resume</a>
   </div>
 </nav>`;
 
