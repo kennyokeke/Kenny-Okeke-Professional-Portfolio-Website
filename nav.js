@@ -16,7 +16,7 @@
   <div class="nav-inner">
     <a href="/" class="nav-logo" aria-label="Home">KO</a>
     <a href="/" class="nav-link${active('/')}">Home</a>
-    <a href="/about" class="nav-link${active('/about')}">About</a>
+    <a href="/background" class="nav-link${active('/background')}">Background</a>
     <a href="/experience" class="nav-link${active('/experience')}">Experience</a>
     <a href="/projects" class="nav-link${active('/projects')}">Projects</a>
     <a href="/resume" class="nav-link${active('/resume')}">Resume</a>

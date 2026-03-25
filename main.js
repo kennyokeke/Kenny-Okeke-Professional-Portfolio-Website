@@ -3,6 +3,14 @@
    ============================================================ */
 
 // ── Page Load Fade-in ──────────────────────────────────────
+window.addEventListener('pageshow', (e) => {
+  if (e.persisted) {
+    document.body.classList.remove('leaving');
+    document.body.classList.add('loaded');
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   requestAnimationFrame(() => {
     document.body.classList.add('loaded');

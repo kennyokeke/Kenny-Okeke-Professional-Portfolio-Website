@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kenny Okeke — About</title>
+  <title>Kenny Okeke — Background</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +20,83 @@
       align-items: end;
     }
     .about-hero-text { padding-bottom: 64px; }
+    .story-group, .credentials-group, .skills-group {
+      position: relative;
+      margin-left: max(32px, calc((100vw - var(--max-w)) / 2));
+    }
+    .story-group::before, .credentials-group::before, .skills-group::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: var(--amber);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .story-group .about-section,
+    .credentials-group .about-section,
+    .skills-group .about-section {
+      padding-left: calc(42px + 320px);
+      position: relative;
+    }
+    .story-group .about-section-inner,
+    .credentials-group .about-section-inner,
+    .skills-group .about-section-inner {
+      display: block;
+      margin: 0;
+      max-width: none;
+    }
+    .story-group .about-section-label,
+    .credentials-group .about-section-label,
+    .skills-group .about-section-label {
+      position: absolute;
+      left: 0;
+      width: calc(42px + 320px);
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .story-group, .credentials-group, .skills-group { margin-left: 20px; margin-right: 0; }
+      .story-group::before, .credentials-group::before, .skills-group::before { left: 0; }
+      .story-group .about-section,
+      .credentials-group .about-section,
+      .skills-group .about-section { padding-left: 20px; }
+      .story-group .about-section-label,
+      .credentials-group .about-section-label,
+      .skills-group .about-section-label { position: static; width: auto; transform: none; }
+      .story-group .about-section-inner,
+      .credentials-group .about-section-inner,
+      .skills-group .about-section-inner { display: grid; grid-template-columns: 1fr; gap: 24px; }
+    }
+    .about-story-intro {
+      font-size: 16px;
+      color: var(--stone);
+      line-height: 1.7;
+      font-style: italic;
+      font-family: var(--font-display);
+    }
+    .about-hero-links {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+    @media (max-width: 600px) {
+      .about-hero-links {
+        flex-wrap: nowrap;
+        gap: 8px;
+      }
+      .about-hero-links .btn {
+        flex: 1;
+        text-align: center;
+        justify-content: center;
+        font-size: 12px;
+        padding: 10px 8px;
+        white-space: nowrap;
+      }
+    }
     .about-hero h1 {
       font-size: clamp(52px, 8vw, 100px);
       font-weight: 700;
@@ -72,8 +149,8 @@
       max-width: var(--max-w);
       margin: 0 auto;
       display: grid;
-      grid-template-columns: 240px 1fr;
-      gap: 72px;
+      grid-template-columns: 280px 1fr;
+      gap: 40px;
       align-items: center;
     }
     .about-section-label {
@@ -85,6 +162,8 @@
       letter-spacing: 0.06em;
       line-height: 1.2;
       text-align: center;
+      align-self: center;
+      justify-self: center;
     }
     .about-section-body {
       font-size: 15px;
@@ -99,7 +178,7 @@
     /* ── SKILLS ── */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
       margin-top: 8px;
     }
@@ -108,21 +187,105 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
-      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+      cursor: pointer;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease, background 0.2s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .skill-item:hover { transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .skill-item.active {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
+      background: var(--surface);
+      border-color: rgba(30,53,40,0.2);
+    }
+    @media (hover: hover) {
+      .skill-item:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+        background: var(--surface);
+        border-color: rgba(30,53,40,0.2);
+      }
+      .skill-item:hover .skill-name { margin-bottom: 10px; }
+      .skill-item:hover .skill-desc { max-height: 120px; opacity: 1; }
+    }
     .skill-name {
       font-family: var(--font-display);
       font-size: 17px;
       font-weight: 600;
       color: var(--green);
-      margin-bottom: 8px;
+      margin-bottom: 0;
+      text-align: center;
+      transition: margin-bottom 0.3s ease;
     }
+    .skill-item.active .skill-name { margin-bottom: 10px; }
     .skill-desc {
       font-size: 13px;
       line-height: 1.6;
       color: var(--stone);
       font-weight: 300;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease;
+    }
+    .skill-item.active .skill-desc { max-height: 120px; opacity: 1; }
+
+    .edu-card-expandable { cursor: pointer; }
+    .edu-coursework-hint {
+      font-size: 11px;
+      color: var(--amber-2);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 12px;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+    .edu-card-expandable.active .edu-coursework-hint,
+    .edu-card-expandable:hover .edu-coursework-hint { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+    .edu-coursework {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.3s ease;
+      margin-top: 0;
+    }
+    @media (hover: hover) {
+      .edu-card-expandable:hover .edu-coursework { max-height: 400px; opacity: 1; margin-top: 16px; }
+    }
+    .edu-card-expandable.active .edu-coursework { max-height: 400px; opacity: 1; margin-top: 16px; }
+    .edu-coursework-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--amber-2);
+      margin-bottom: 10px;
+    }
+    .edu-coursework-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-flow: column;
+      gap: 6px 16px;
+    }
+    .edu-coursework-list li {
+      font-size: 12px;
+      color: var(--stone);
+      font-weight: 300;
+      line-height: 1.4;
+      padding-left: 10px;
+      position: relative;
+      text-align: left;
+    }
+    .edu-coursework-list li::before {
+      content: '–';
+      position: absolute;
+      left: 0;
+      color: var(--amber);
     }
 
     /* ── EDUCATION ── */
@@ -242,6 +405,11 @@
       <div class="about-hero-text reveal">
         <h1><em>About</em><br>Kenny Okeke</h1>
         <p class="about-hero-lead">I'm a Product Manager with a background in mechanical engineering, consulting, and an MBA, focused on building products that operate at scale in complex, real-world environments. My path into product has been shaped by hands-on execution, customer problem-solving, and structured decision-making across technical and business contexts.</p>
+        <div class="about-hero-links">
+          <a href="#story" class="btn btn-green">My Story</a>
+          <a href="#credentials" class="btn btn-ghost">My Credentials</a>
+          <a href="#skills" class="btn btn-amber">My Skills</a>
+        </div>
       </div>
       <div class="about-photo-wrap reveal reveal-delay-2">
         <img src="/brand_assets/picture.JPG" alt="Kenny Okeke" class="about-photo">
@@ -250,7 +418,17 @@
     </div>
 
     <!-- ═══════════════ CONTENT ═══════════════ -->
-    <div class="about-content">
+    <div class="about-content" id="story">
+
+      <!-- My Story Header -->
+      <div class="about-section about-section-header">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">My Story</h2>
+          <p class="about-story-intro reveal reveal-delay-1">A look at the path, the pivots, and the experiences that shaped how I think about product.</p>
+        </div>
+      </div>
+
+      <div class="story-group">
 
       <!-- Professional Foundation -->
       <div class="about-section">
@@ -267,7 +445,7 @@
       <!-- The Shift to Product -->
       <div class="about-section">
         <div class="about-section-inner">
-          <h2 class="about-section-label reveal">The Shift to Product</h2>
+          <h2 class="about-section-label reveal">The Shift<br>To Product</h2>
           <div class="about-section-body reveal reveal-delay-1">
             <p>Over time, I began to recognize a consistent pattern in the work I gravitated toward. Across my roles, I was drawn to solving customer problems, making decisions under uncertainty, and aligning teams around a clear direction. <strong>I was already working as a Product Manager.</strong></p>
             <p>Outside of formal work settings, conversations centered on technology and how products are designed and experienced helped crystallize this realization. I realized that my way of thinking extended beyond my role and into how I engaged with the technology I used every day. I became increasingly interested not just in using technology, but in the systems and design decisions behind the tools themselves.</p>
@@ -279,7 +457,7 @@
       <!-- My Product Approach -->
       <div class="about-section">
         <div class="about-section-inner">
-          <h2 class="about-section-label reveal">My Product Approach</h2>
+          <h2 class="about-section-label reveal">My Product<br>Approach</h2>
           <div class="about-section-body reveal reveal-delay-1">
             <p>I view product management as operating at the intersection of <strong>desirability, feasibility, and viability</strong>. Strong product decisions sit where customers genuinely want a solution, technology can realistically support it, and the business can sustain it over time.</p>
             <p>In practice, I ground decisions in customer insight to understand desirability, partner closely with engineering to assess feasibility, and evaluate options through the lens of business impact and scale to ensure viability. My role is to navigate the tradeoffs between these dimensions and bring clarity when priorities compete.</p>
@@ -288,11 +466,115 @@
         </div>
       </div>
 
-      <!-- Skills -->
+      </div><!-- /story-group -->
+
+      <!-- My Credentials -->
+      <div class="about-section about-section-header" id="credentials">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">My Credentials</h2>
+          <p class="about-story-intro reveal reveal-delay-1">The academic and professional qualifications behind the work.</p>
+        </div>
+      </div>
+
+      <div class="credentials-group">
+
+      <!-- Education -->
       <div class="about-section">
         <div class="about-section-inner">
-          <h2 class="about-section-label reveal">Skills</h2>
+          <h2 class="about-section-label reveal">Education</h2>
           <div class="reveal reveal-delay-1">
+            <div class="edu-grid">
+              <div class="edu-card edu-card-ut edu-card-expandable" tabindex="0">
+                <div class="edu-icon edu-icon-ut" style="overflow:visible;"><img src="/brand_assets/Texas_Longhorns_logo.svg.png" alt="UT Austin" style="transform:scale(2.1);"></div>
+                <p class="edu-institution">The University of Texas at Austin</p>
+                <p class="edu-school">McCombs School of Business</p>
+                <p class="edu-degree">Master of Business Administration</p>
+                <p class="edu-note">Product Management and AI Strategy Concentration</p>
+                <p class="edu-coursework-hint">Hover or tap to view coursework</p>
+                <div class="edu-coursework">
+                  <p class="edu-coursework-title">Relevant Coursework</p>
+                  <ul class="edu-coursework-list" style="grid-template-rows: repeat(7, auto);">
+                    <li>Product Management</li>
+                    <li>AI in Business and Society</li>
+                    <li>AI for Competitive Advantage</li>
+                    <li>Business Analytics &amp; Decision Modeling</li>
+                    <li>SQL for Business and Marketing</li>
+                    <li>Design Thinking &amp; Business Innovation</li>
+                    <li>Corporate Strategy &amp; Firm Growth</li>
+                    <li>Analysis of Markets</li>
+                    <li>Performance and Sports Analytics</li>
+                    <li>Marketing Analytics</li>
+                    <li>Digital Marketing</li>
+                    <li>Strategic Branding</li>
+                    <li>New Venture Creation</li>
+                    <li>Managing &amp; Marketing in Global Arena</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="edu-card edu-card-ua edu-card-expandable" tabindex="0">
+                <div class="edu-icon edu-icon-ua"><img src="/brand_assets/Golden_Bears_Logo.png" alt="University of Alberta"></div>
+                <p class="edu-institution">The University of Alberta</p>
+                <p class="edu-school">Faculty of Engineering</p>
+                <p class="edu-degree">Bachelor of Science in Mechanical Engineering</p>
+                <p class="edu-note">Graduated with Distinction</p>
+                <p class="edu-coursework-hint">Hover or tap to view coursework</p>
+                <div class="edu-coursework">
+                  <p class="edu-coursework-title">Relevant Coursework</p>
+                  <ul class="edu-coursework-list" style="grid-template-rows: repeat(5, auto);">
+                    <li>Design Project</li>
+                    <li>Computer Programming for Engineers</li>
+                    <li>Engineering Economy</li>
+                    <li>Operations Management</li>
+                    <li>Behavior in Organizations</li>
+                    <li>Engineering Safety &amp; Risk Management</li>
+                    <li>Mechanical Design I &amp; II</li>
+                    <li>Engineering Graphics &amp; CAD</li>
+                    <li>Feedback Control Design</li>
+                    <li>Numerical Methods</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Certifications -->
+      <div class="about-section">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">Certifications</h2>
+          <div class="reveal reveal-delay-1">
+            <div class="cert-grid">
+              <div class="cert-card">
+                <div class="cert-logo"><img src="/brand_assets/PMI-Symbol.png" alt="PMI"></div>
+                <p class="cert-name">Project Management Professional (PMP)</p>
+                <p class="cert-issuer">Project Management Institute (PMI)</p>
+              </div>
+              <div class="cert-card">
+                <div class="cert-logo"><img src="/brand_assets/pragmatic-institute-icon.png" alt="Pragmatic Institute"></div>
+                <p class="cert-name">Product Management</p>
+                <p class="cert-issuer">Pragmatic Institute</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div><!-- /credentials-group -->
+
+      <!-- My Skills Header -->
+      <div class="about-section about-section-header" id="skills">
+        <div class="about-section-inner">
+          <h2 class="about-section-label reveal">My Skills</h2>
+          <p class="about-story-intro reveal reveal-delay-1">A snapshot of the tools, methods, and practices I apply across my work. Hover or tap any card to learn more.</p>
+        </div>
+      </div>
+
+      <!-- Skills Cards -->
+      <div class="skills-group">
+      <div class="about-section">
+        <div class="about-section-inner">
+          <div class="reveal reveal-delay-1" style="grid-column: 1 / -1;">
             <div class="skills-grid">
               <div class="skill-item">
                 <p class="skill-name">Product Strategy</p>
@@ -354,57 +636,20 @@
           </div>
         </div>
       </div>
-
-      <!-- Education -->
-      <div class="about-section">
-        <div class="about-section-inner">
-          <h2 class="about-section-label reveal">Education</h2>
-          <div class="reveal reveal-delay-1">
-            <div class="edu-grid">
-              <div class="edu-card edu-card-ut">
-                <div class="edu-icon edu-icon-ut" style="overflow:visible;"><img src="/brand_assets/Texas_Longhorns_logo.svg.png" alt="UT Austin" style="transform:scale(2.1);"></div>
-                <p class="edu-institution">The University of Texas at Austin</p>
-                <p class="edu-school">McCombs School of Business</p>
-                <p class="edu-degree">Master of Business Administration</p>
-                <p class="edu-note">Product Management and AI Strategy Concentration</p>
-              </div>
-              <div class="edu-card edu-card-ua">
-                <div class="edu-icon edu-icon-ua"><img src="/brand_assets/Golden_Bears_Logo.png" alt="University of Alberta"></div>
-                <p class="edu-institution">The University of Alberta</p>
-                <p class="edu-school">Faculty of Engineering</p>
-                <p class="edu-degree">Bachelor of Science in Mechanical Engineering</p>
-                <p class="edu-note">Graduated with Distinction</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Certifications -->
-      <div class="about-section">
-        <div class="about-section-inner">
-          <h2 class="about-section-label reveal">Certifications</h2>
-          <div class="reveal reveal-delay-1">
-            <div class="cert-grid">
-              <div class="cert-card">
-                <div class="cert-logo"><img src="/brand_assets/PMI-Symbol.png" alt="PMI"></div>
-                <p class="cert-name">Project Management Professional (PMP)</p>
-                <p class="cert-issuer">Project Management Institute (PMI)</p>
-              </div>
-              <div class="cert-card">
-                <div class="cert-logo"><img src="/brand_assets/pragmatic-institute-icon.png" alt="Pragmatic Institute"></div>
-                <p class="cert-name">Product Management</p>
-                <p class="cert-issuer">Pragmatic Institute</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </div><!-- /skills-group -->
 
     </div><!-- /about-content -->
   </main>
 
   <script src="/nav.js"></script>
   <script src="/main.js"></script>
+  <script>
+    document.querySelectorAll('.skill-item').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('active'));
+    });
+    document.querySelectorAll('.edu-card-expandable').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('active'));
+    });
+  </script>
 </body>
 </html>

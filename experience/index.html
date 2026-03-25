@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/styles.css">
   <style>
     .exp-hero {
-      padding: calc(var(--nav-h) + 80px) 32px 80px;
+      padding: calc(var(--nav-h) + 48px) 32px 48px;
       text-align: center;
       background: var(--bg);
       position: relative;
@@ -46,13 +46,13 @@
 
     /* ROLES GRID */
     .roles-section {
-      padding: 80px 32px 96px;
+      padding: 56px 32px 80px;
       background: var(--surface);
       border-top: 1px solid var(--border-2);
     }
     .roles-header {
       max-width: var(--max-w);
-      margin: 0 auto 56px;
+      margin: 0 auto 36px;
       text-align: center;
     }
     .roles-title {
@@ -68,8 +68,13 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 28px;
     }
+    a.role-card, a.role-card * {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
     .role-card {
-      background: var(--surface);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
       padding: 40px 32px 36px;
@@ -81,7 +86,7 @@
       box-shadow: var(--shadow-sm);
       transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
     }
-    .role-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+    .role-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); background: var(--surface); }
     .role-logo {
       height: 64px;
       display: flex;
@@ -154,37 +159,37 @@
       <div class="roles-grid">
 
         <!-- Amazon -->
-        <div class="role-card reveal">
+        <a href="/experience-amazon" class="role-card reveal">
           <div class="role-logo">
             <img src="/brand_assets/Amazon_logo.svg.webp" alt="Amazon" />
           </div>
           <p class="role-title">Senior Product Manager – Technical Intern</p>
           <div class="role-divider"></div>
           <p class="role-desc">Driving product decisions across large-scale fulfillment operations, focused on customer processes, device strategy, and scalability.</p>
-          <a href="/experience-amazon" class="btn btn-amber">→ View Role</a>
-        </div>
+          <span class="btn btn-amber">→ View Role</span>
+        </a>
 
         <!-- Pembina -->
-        <div class="role-card reveal reveal-delay-1">
+        <a href="/experience-pembina" class="role-card reveal reveal-delay-1">
           <div class="role-logo">
             <img src="/brand_assets/Pembina_Pipeline-Logo.wine.png" alt="Pembina Pipeline" style="height:64px;width:180px;object-fit:contain;transform:scale(2.5);transform-origin:center;" />
           </div>
           <p class="role-title">Project Engineer</p>
           <div class="role-divider"></div>
           <p class="role-desc">Project development for capital initiatives within regulated energy infrastructure, coordinating technical analysis, timelines, budgets, and cross-functional stakeholders.</p>
-          <a href="/experience-pembina" class="btn btn-amber">→ View Role</a>
-        </div>
+          <span class="btn btn-amber">→ View Role</span>
+        </a>
 
         <!-- Ascent -->
-        <div class="role-card reveal reveal-delay-2">
+        <a href="/experience-ascent" class="role-card reveal reveal-delay-2">
           <div class="role-logo">
             <img src="/brand_assets/ascent-consulting-logo.png" alt="Ascent Consulting" />
           </div>
           <p class="role-title">Project Engineer</p>
           <div class="role-divider"></div>
           <p class="role-desc">Client-facing consulting work translating ambiguous customer needs into structured requirements and executed solutions, from initial scoping through to final delivery.</p>
-          <a href="/experience-ascent" class="btn btn-amber">→ View Role</a>
-        </div>
+          <span class="btn btn-amber">→ View Role</span>
+        </a>
 
       </div>
     </section>

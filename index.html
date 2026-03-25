@@ -107,9 +107,8 @@
     }
     .hero-scroll {
       position: absolute;
-      bottom: 32px;
+      bottom: calc(var(--nav-h) + 32px);
       left: 50%;
-      transform: translateX(-50%);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -120,7 +119,7 @@
       text-transform: uppercase;
       font-weight: 500;
       opacity: 0;
-      animation: fadeUp 0.9s var(--ease-out) 1.1s forwards;
+      animation: scrollFadeUp 0.9s var(--ease-out) 1.1s forwards;
     }
     .hero-scroll-line {
       width: 1px;
@@ -435,15 +434,16 @@
       background: var(--green);
     }
     .cta-inner {
-      max-width: var(--max-w);
-      margin: 0 auto;
+      max-width: none;
+      text-align: center;
     }
     .cta-text {
       font-family: var(--font-display);
-      font-size: clamp(28px, 4vw, 44px);
+      font-size: clamp(18px, 2.4vw, 32px);
       font-weight: 500;
       line-height: 1.3;
       color: rgba(255,255,255,0.85);
+      white-space: nowrap;
     }
     .cta-text a {
       color: var(--amber);
@@ -457,6 +457,10 @@
       from { opacity: 0; transform: translateY(24px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    @keyframes scrollFadeUp {
+      from { opacity: 0; transform: translateX(-50%) translateY(24px); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
     @keyframes scrollPulse {
       0%, 100% { opacity: 0.4; transform: scaleY(1); }
       50%       { opacity: 1;   transform: scaleY(0.6); }
@@ -464,11 +468,13 @@
 
     /* Responsive */
     @media (max-width: 768px) {
+      .hero-scroll { bottom: calc(var(--nav-h) + 8px); }
       .overview-inner { grid-template-columns: 1fr; gap: 40px; }
       .snapshot-timeline { overflow-x: auto; padding-bottom: 8px; }
       .tl-grid { min-width: 640px; }
       .impact-item:first-child { flex-direction: column; align-items: flex-start; padding: 36px; gap: 16px; }
       .cta-inner { flex-direction: column; align-items: flex-start; }
+      .cta-text { white-space: normal; }
     }
     @media (max-width: 480px) {
       .impact-grid { grid-template-columns: 1fr; }
@@ -490,7 +496,7 @@
         <p class="hero-tagline">Engineering-trained, <strong>MBA-educated.</strong></p>
       </div>
       <div class="hero-ctas">
-        <a href="/about" class="btn btn-green">About Me</a>
+        <a href="/background" class="btn btn-green">View Background</a>
         <a href="/experience" class="btn btn-green">View Experience</a>
         <a href="/projects" class="btn btn-green">View Projects</a>
         <a href="/resume" class="btn btn-green">View Resume</a>
@@ -651,7 +657,7 @@
     <section class="cta-section">
       <div class="cta-inner">
         <p class="cta-text reveal">
-          Learn more <a href="/about">about</a> my background, dive deeper into my professional <a href="/experience">experience</a>, explore my work through selected <a href="/projects">projects</a>, or grab a copy of my <a href="/resume">resume</a>.
+          Explore my <a href="/background">background</a>, <a href="/experience">experience</a>, and <a href="/projects">projects</a> — or grab my <a href="/resume">resume</a>.
         </p>
       </div>
     </section>
