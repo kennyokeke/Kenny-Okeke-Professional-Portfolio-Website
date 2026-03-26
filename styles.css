@@ -360,13 +360,14 @@ h1, h2, h3, h4 {
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
-  max-width: 560px;
+  max-width: 680px;
   margin: 0 auto;
 }
 .page-hero-actions .btn {
   flex: 1 1 calc(50% - 6px);
   max-width: calc(50% - 6px);
   justify-content: center;
+  white-space: nowrap;
 }
 
 /* === DETAIL PAGE SECTIONS === */
@@ -446,5 +447,5 @@ h1, h2, h3, h4 {
   .page-hero { padding: calc(var(--nav-h) + 40px) 20px 48px; }
   .detail-section { padding: 56px 20px; }
   .page-hero-actions { flex-direction: column; padding: 0 24px; }
-  .page-hero-actions .btn { flex: 1 1 100%; max-width: 100%; justify-content: center; }
+  .page-hero-actions .btn { flex: 1 1 100%; width: 100%; max-width: 100%; justify-content: center; white-space: normal; min-height: 66px; }
 }

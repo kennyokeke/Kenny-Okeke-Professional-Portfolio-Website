@@ -66,4 +66,37 @@
   document.body.insertAdjacentHTML('afterbegin', nav);
   // Inject footer after last child of body
   document.body.insertAdjacentHTML('beforeend', footer);
+
+  // Back to top button
+  const btn = document.createElement('button');
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>`;
+  btn.style.cssText = `
+    position: fixed; bottom: 28px; right: 28px; z-index: 999;
+    width: 44px; height: 44px;
+    background: var(--green, #2D5A3D); color: #fff;
+    border: none; border-radius: 50%; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+  `;
+  document.body.appendChild(btn);
+
+  window.addEventListener('scroll', function () {
+    const show = window.scrollY > 400;
+    btn.style.opacity = show ? '1' : '0';
+    btn.style.pointerEvents = show ? 'auto' : 'none';
+  }, { passive: true });
+
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  btn.addEventListener('mouseenter', function () {
+    btn.style.transform = 'translateY(-3px)';
+  });
+  btn.addEventListener('mouseleave', function () {
+    btn.style.transform = 'translateY(0)';
+  });
 })();
