@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kenny Okeke — Amazon Prime Persona</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="/styles.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z32VK8XXGQ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-Z32VK8XXGQ');
+  </script>
+</head>
+<body>
+  <main>
+    <div class="page-hero" style="position: relative;">
+      <a href="/projects" class="btn btn-ghost" style="position: absolute; top: calc(var(--nav-h) + 20px); left: 32px; font-size: 12px; padding: 6px 16px;">← All Projects</a>
+      <div style="padding: calc(var(--nav-h) + 48px) 32px 52px; max-width: var(--max-w); margin: 0 auto; text-align: center;">
+        <div style="width: 200px; height: 200px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+          <img src="/brand_assets/prime-sports-logo.jpg" alt="Prime Sports" style="width: 100%; height: 100%; object-fit: contain; border-radius: 50%; mix-blend-mode: multiply;" />
+        </div>
+        <h1 style="font-size: clamp(26px, 3.5vw, 40px); margin-bottom: 8px;">Amazon Prime Persona</h1>
+        <p class="page-hero-subtitle">Surfacing sports talent content from the Amazon ecosystem into the live broadcast.</p>
+        <div class="page-hero-actions">
+          <a href="/project-amazon-prime-persona/demo" target="_blank" class="btn btn-amber">→ View Demo</a>
+          <a href="/files/amazon-prime-persona-prd.pdf" target="_blank" class="btn btn-ghost">→ View PRD</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-section reveal"><div class="detail-inner"><p class="detail-label">Context</p><div class="detail-content"><p>Prime Video Sports delivers a strong live broadcast experience, but fans today want more than just the game. Trends like <em>Mind the Game</em> with LeBron James (94M YouTube views) and Netflix's <em>Quarterback</em> with Patrick Mahomes (21.5M views) show that fans want to connect with athletes as people, not just players. At the same time, Amazon already has proven models for surfacing contextual, ecosystem-linked content within a live viewing experience: X-Ray does it for scripted content via IMDb, and Shop the Game does it for live sports via Amazon Shopping. Prime Persona applies that same model to player, broadcast personality, and analyst content for live sports.</p></div></div></div>
+
+    <div class="detail-section reveal"><div class="detail-inner"><p class="detail-label">Problem</p><div class="detail-content"><p>When a fan watching a live game on Prime Video encounters a standout moment (ex. a big catch by a player or a sharp take by an analyst), there is no path to the sport talent's broader story without leaving the app entirely. This is a missed opportunity: Amazon already owns the platforms fans would naturally turn to (Twitch, Amazon Music, and Audible), yet those assets sit siloed and underused during live sports. Players and personalities with strong personal brands go completely unexplored within the viewing experience, even as features like Prime Vision already surface their performance data in real time.</p></div></div></div>
+
+    <div class="detail-section reveal"><div class="detail-inner"><p class="detail-label">Approach</p><div class="detail-content">
+      <p>I anchored the solution on Amazon's existing X-Ray pattern (a user-initiated overlay that adds a content layer without disrupting the primary experience) and extended it to player and analyst content. The panel is user-initiated and accessible across TV, desktop, and mobile, surfacing a curated feed drawing from Twitch, Amazon Music, and Audible. I defined the full PRD and sequenced delivery across four versions:</p>
+      <p style="margin-top: 12px;"><strong>V1.0: Twitch Streams &amp; Clips.</strong> Surface recent streams and clips for players, analysts, and personalities in the current broadcast. Initial launch on Thursday Night Football and NBA on Prime.</p>
+      <p style="margin-top: 12px;"><strong>V1.1: Amazon Music Podcasts.</strong> Add podcast episode cards with one-tap listen or follow actions.</p>
+      <p style="margin-top: 12px;"><strong>V1.2: Audible.</strong> Surface player and personality audiobooks and long-form spoken content.</p>
+      <p style="margin-top: 12px;"><strong>V1.3: Full Ecosystem Profile.</strong> A unified view aggregating a person's Twitch, Amazon Music, and Audible presence in a single profile within Prime Persona.</p>
+    </div></div></div>
+
+    <div class="detail-section reveal"><div class="detail-inner"><p class="detail-label">Key Decisions &amp; Tradeoffs</p><div class="detail-content"><p>Three decisions shaped the V1 scope. First, I limited content to Amazon-owned platforms only (Twitch, Amazon Music, and Audible), deliberately excluding third-party sources like YouTube, ESPN, or Instagram. This keeps the feature within Amazon's control, avoids licensing complexity, and builds on a competitive moat no other sports streaming service can match: simultaneous ownership of all three content types. Second, the panel defaults to closed and is user-initiated only, ensuring Prime Persona adds a content layer without disrupting the live broadcast. Third, entity resolution (linking player, analyst, and personality roster data to ecosystem profiles) is handled via a manually curated mapping table for V1, trading automation for reliability at launch. This is backed by Sportradar, which Amazon already uses to power Prime Vision.</p></div></div></div>
+
+    <div class="detail-section reveal"><div class="detail-inner"><p class="detail-label">Impact</p><div class="detail-content">
+      <p>Prime Persona creates a defensible competitive advantage by turning Amazon's fragmented ecosystem into a unified fan engagement layer directly inside a live sports broadcast, one no competitor can replicate. It also builds the data foundation for future personalization, such as following a player and receiving their content automatically across broadcasts.</p>
+      <p style="margin-top: 12px;">Success targets at 90 days post-launch:</p>
+      <ul style="margin-top: 8px; padding-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+        <li><strong>Prime Persona open rate:</strong> 15% of active viewers per session</li>
+        <li><strong>Cross-app click-through</strong> (to Twitch, Amazon Music, or Audible): 20% of openers</li>
+        <li><strong>Session time increase</strong> among Prime Persona users: +8 minutes</li>
+        <li><strong>Content engagement:</strong> 30% of click-throughs result in meaningful consumption</li>
+        <li><strong>Retention:</strong> 40% of openers return in a subsequent game</li>
+      </ul>
+    </div></div></div>
+
+    <div class="detail-section reveal"><div class="detail-inner"><p class="detail-label">What This<br>Project Shaped</p><div class="detail-content"><p>This project sharpened my ability to translate ecosystem strategy into a concrete product spec for a live streaming product, identifying where Amazon's owned assets could be surfaced contextually to create compounding value. It deepened my practice of grounding product decisions in analogous precedents (X-Ray, Shop the Game), scoping clearly for V1 without sacrificing the vision, and thinking through the technical and operational requirements (entity resolution, API integrations, staged rollout) that determine whether a feature actually ships.</p></div></div></div>
+  </main>
+  <script src="/nav.js"></script><script src="/main.js"></script>
+</body>
+</html>
