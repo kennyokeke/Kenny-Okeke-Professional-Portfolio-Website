@@ -3,9 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="mobile-web-app-capable" content="yes">
   <title>Amazon Prime Persona - Live Demo</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2060,23 +2057,6 @@
     <div class="demo-badge"><span>Prime Persona</span> · Mobile Demo</div>
   </div><!-- /#mobile-demo -->
 
-  <!-- iOS fullscreen tip -->
-  <div id="iosTip" style="
-    display:none; position:fixed; bottom:90px; left:50%; transform:translateX(-50%);
-    background:rgba(20,20,20,0.92); border:1px solid rgba(255,255,255,0.12);
-    border-radius:14px; padding:12px 18px; z-index:10000;
-    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
-    font-family:'DM Sans',sans-serif; font-size:13px; color:#fff;
-    white-space:nowrap; pointer-events:none;
-    animation: tipFade 4s ease forwards;
-  ">
-    <span style="opacity:0.6;">For true fullscreen:</span>
-    tap <svg style="display:inline;vertical-align:middle;margin:0 3px" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
-    → <strong>Add to Home Screen</strong>
-  </div>
-  <style>
-    @keyframes tipFade { 0%{opacity:0;transform:translateX(-50%) translateY(6px)} 15%{opacity:1;transform:translateX(-50%) translateY(0)} 75%{opacity:1} 100%{opacity:0} }
-  </style>
 
   <script>
     /* ─────────────────────────────────────────────
@@ -2161,19 +2141,6 @@
       controlsTimer = setTimeout(() => fsOverlay.classList.add('hidden'), 3000);
     }
 
-    const _isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const _isStandalone = window.navigator.standalone === true;
-
-    function showIOSTip() {
-      const tip = document.getElementById('iosTip');
-      if (!tip || _isStandalone) return;
-      tip.style.display = 'block';
-      tip.style.animation = 'none';
-      tip.offsetHeight; // reflow
-      tip.style.animation = 'tipFade 4s ease forwards';
-      setTimeout(() => { tip.style.display = 'none'; }, 4000);
-    }
-
     async function toggleFullscreen() {
       if (!mApp) return;
       if (mApp.classList.contains('fullscreen')) {
@@ -2182,8 +2149,7 @@
         if (document.fullscreenElement) await document.exitFullscreen().catch(() => {});
       } else {
         mApp.classList.add('fullscreen');
-        const fsOk = await document.documentElement.requestFullscreen().then(() => true).catch(() => false);
-        if (!fsOk && _isIOS) showIOSTip();
+        try { await document.documentElement.requestFullscreen(); } catch(e) {}
         showFsControls();
       }
     }
