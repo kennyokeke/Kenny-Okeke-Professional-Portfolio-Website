@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amazon Prime Persona - Live Demo</title>
+  <script>
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768) {
+      location.replace('/project-amazon-prime-persona/demo-mobile');
+    }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Amazon+Ember:wght@400;700&family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
@@ -833,6 +838,18 @@
     .audible-card .content-action-label { color: var(--audible); }
 
     .content-action-arrow { font-size: 12px; color: var(--text-muted); }
+    .add-to-list-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 4px;
+      color: var(--text-dim);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 8px; cursor: pointer; white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .add-to-list-btn:hover { border-color: rgba(255,255,255,0.3); color: var(--text); }
+    .add-to-list-btn.added { border-color: rgba(0,168,225,0.5); color: var(--prime-blue); }
 
     /* Section divider */
     .panel-divider {
@@ -925,6 +942,7 @@
       display: flex !important;
     }
   }
+
   .mobile-gate {
     display: none;
     position: fixed;
@@ -1145,12 +1163,12 @@
                 <div class="content-info">
                   <div class="content-source source-audible"><img src="/brand_assets/audible-logo.png" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;"> Audible</div>
                   <div class="content-title">The Inspiring Story of One of Football's Star Quarterbacks</div>
-                  <div class="content-meta">By Lamar Jackson · 6h 14m</div>
+                  <div class="content-meta">By Clayton Geoffreys · 2h 43m</div>
                 </div>
               </div>
               <div class="content-action">
                 <span class="content-action-label">Listen on Audible</span>
-                <span class="content-action-arrow">→</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
               </div>
             </a>
           </div>
@@ -1176,12 +1194,12 @@
                 <div class="content-info">
                   <div class="content-source source-twitch"><img src="/brand_assets/twitch-logo.png" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;"> Twitch</div>
                   <div class="content-title">Channel: jamarrchase10</div>
-                  <div class="content-meta">Recent broadcast: Call of Duty: Warzone</div>
+                  <div class="content-meta">Recent broadcast: ARC Raiders</div>
                 </div>
               </div>
               <div class="content-action">
                 <span class="content-action-label">Watch on Twitch</span>
-                <span class="content-action-arrow">→</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
               </div>
             </a>
           </div>
@@ -1204,12 +1222,12 @@
                 <div class="content-info">
                   <div class="content-source source-music"><img src="/brand_assets/amazon-music-logo.png" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;"> Amazon Music</div>
                   <div class="content-title">The Marlon Humphrey Show</div>
-                  <div class="content-meta">Latest ep · "Ravens in the Hunt" · 58 min</div>
+                  <div class="content-meta">Latest ep · "New Era for The Ravens • Belichick Snubbed • Kyle Hamilton's Top 5 • America's Best QB?" · 1 hr 4 min</div>
                 </div>
               </div>
               <div class="content-action">
                 <span class="content-action-label">Listen on Amazon Music</span>
-                <span class="content-action-arrow">→</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
               </div>
             </a>
           </div>
@@ -1235,12 +1253,12 @@
                 <div class="content-info">
                   <div class="content-source source-music"><img src="/brand_assets/amazon-music-logo.png" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;"> Amazon Music</div>
                   <div class="content-title">The Richard Sherman Podcast</div>
-                  <div class="content-meta">Latest ep · NFL Week 13 Breakdown · 62 min</div>
+                  <div class="content-meta">Latest ep · "Why Seahawks PAID Jaxon Smith-Njigba $42M, 49ers-Trent Duffy drama, OBJ next team" · 29 min</div>
                 </div>
               </div>
               <div class="content-action">
                 <span class="content-action-label">Listen on Amazon Music</span>
-                <span class="content-action-arrow">→</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
               </div>
             </a>
           </div>
@@ -1263,12 +1281,12 @@
                 <div class="content-info">
                   <div class="content-source source-audible"><img src="/brand_assets/audible-logo.png" style="width:12px;height:12px;object-fit:contain;vertical-align:middle;"> Audible</div>
                   <div class="content-title">You Can't Make This Up</div>
-                  <div class="content-meta">By Al Michaels · 7h 32m</div>
+                  <div class="content-meta">By Al Michaels · 9h 55m</div>
                 </div>
               </div>
               <div class="content-action">
                 <span class="content-action-label">Listen on Audible</span>
-                <span class="content-action-arrow">→</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
               </div>
             </a>
           </div>
@@ -1289,6 +1307,12 @@
   <div class="demo-badge"><span>Prime Persona</span> · Interactive Demo</div>
 
   <script>
+    function toggleList(btn, e) {
+      e.preventDefault(); e.stopPropagation();
+      btn.classList.toggle('added');
+      btn.textContent = btn.classList.contains('added') ? '✓ Added' : '+ Add to List';
+    }
+
     function openPanel() {
       document.getElementById('personaPanel').classList.add('open');
       document.getElementById('videoWrap').classList.add('panel-open');

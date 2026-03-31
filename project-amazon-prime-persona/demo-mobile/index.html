@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Prime Persona - Mobile Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --prime-blue: #00A8E1;
+      --prime-blue-dim: rgba(0,168,225,0.15);
+      --surface: #1A1A1A;
+      --surface-2: #222222;
+      --surface-3: #2A2A2A;
+      --text: #F0F0F0;
+      --text-dim: #999;
+      --text-muted: #555;
+      --twitch: #9146FF;
+      --audible: #F8991D;
+      --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    html, body {
+      height: 100%;
+      background: #0F0F0F;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+      overflow: hidden;
+    }
+
+    .app {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #0F0F0F;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      height: 52px;
+      display: flex; align-items: center;
+      padding: 0 16px; gap: 12px;
+      flex-shrink: 0;
+      background: #0F0F0F;
+    }
+    .top-bar-back {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 20px; cursor: pointer; flex-shrink: 0;
+    }
+    .top-bar-title {
+      flex: 1;
+      font-size: 14px; font-weight: 600; color: #fff;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .top-bar-icons { display: flex; gap: 16px; align-items: center; }
+    .top-bar-icon { color: #ccc; display: flex; align-items: center; cursor: pointer; }
+
+    /* ── VIDEO PLAYER ── */
+    .video-player {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      background: #000;
+      flex-shrink: 0;
+    }
+    .video-bg {
+      position: absolute; inset: 0;
+      background: url('/brand_assets/ravens-bengals-image.webp') center 20% / cover no-repeat;
+    }
+    .video-dim {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.38);
+    }
+
+    /* Scorebug */
+    .m-scorebug {
+      position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center;
+      border-radius: 5px; overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.8);
+      z-index: 10;
+    }
+    .m-score-team { display: flex; align-items: center; gap: 5px; padding: 5px 9px; }
+    .m-score-team.ravens  { background: #241773; }
+    .m-score-team.bengals { background: #4a1800; flex-direction: row-reverse; }
+    .m-score-team img { width: 20px; height: 20px; object-fit: contain; }
+    .m-score-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: #fff; line-height: 1; }
+    .m-score-mid {
+      background: #0057B8; padding: 4px 8px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+    }
+    .m-score-mid img { height: 13px; object-fit: contain; }
+    .m-score-mid-info { font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.8); letter-spacing: 0.04em; white-space: nowrap; }
+
+    /* Touchdown */
+    .td-banner {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .td-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 40px; letter-spacing: 0.06em; color: #fff; line-height: 1;
+      text-shadow: 0 0 30px rgba(251,79,20,0.8), 0 2px 4px rgba(0,0,0,1);
+    }
+    .td-sub {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.85); text-shadow: 0 2px 8px rgba(0,0,0,1); margin-top: 3px;
+      white-space: nowrap;
+    }
+
+    /* Video controls overlay */
+    .video-controls {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .video-controls-mid {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      display: flex; align-items: center; gap: 28px;
+    }
+    .ctrl-btn {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.9); cursor: pointer;
+    }
+    .ctrl-btn.play-btn {
+      width: 44px; height: 44px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 50%;
+      backdrop-filter: blur(4px);
+    }
+    .ctrl-skip-label {
+      font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.8);
+      text-align: center; margin-top: 2px; letter-spacing: 0.04em;
+    }
+    .ctrl-skip-wrap { display: flex; flex-direction: column; align-items: center; }
+
+    /* Progress + bottom row */
+    .video-bottom {
+      padding: 0 12px 8px;
+    }
+    .progress-bar {
+      height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px; margin-bottom: 6px; position: relative; cursor: pointer;
+    }
+    .progress-fill { width: 62%; height: 100%; background: var(--prime-blue); border-radius: 2px; }
+    .progress-dot {
+      position: absolute; left: 62%; top: 50%; transform: translate(-50%, -50%);
+      width: 10px; height: 10px; border-radius: 50%; background: #fff;
+    }
+    .video-bottom-row {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .video-time { font-size: 10px; color: rgba(255,255,255,0.7); font-variant-numeric: tabular-nums; }
+    .video-enlarge {
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.8); cursor: pointer; padding: 4px;
+    }
+
+    /* ── CONTENT AREA (below video) ── */
+    .content-area {
+      flex: 1; overflow-y: auto; background: #0F0F0F;
+    }
+    .content-area::-webkit-scrollbar { display: none; }
+
+    /* Feature buttons (X-Ray row) */
+    .feature-row {
+      display: flex; align-items: center;
+      padding: 14px 16px; gap: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .feature-btn {
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      cursor: pointer; flex: 1;
+    }
+    .feature-btn-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--surface);
+      display: flex; align-items: center; justify-content: center;
+      color: #ccc;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .feature-btn-label {
+      font-size: 10px; font-weight: 500; color: var(--text-dim); letter-spacing: 0.01em;
+    }
+    /* Persona button — highlighted */
+    .feature-btn.persona .feature-btn-icon {
+      background: rgba(0,168,225,0.15);
+      border-color: rgba(0,168,225,0.4);
+      color: var(--prime-blue);
+    }
+    .feature-btn.persona .feature-btn-label { color: var(--prime-blue); font-weight: 600; }
+    .feature-btn.persona:active .feature-btn-icon { background: rgba(0,168,225,0.28); }
+
+    /* Game info */
+    .game-info { padding: 16px 16px 8px; }
+    .game-info-title { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .game-info-meta { font-size: 12px; color: var(--text-dim); line-height: 1.5; }
+    .live-pill {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 4px; padding: 2px 7px;
+      font-size: 9px; font-weight: 700; letter-spacing: 0.1em; color: #EF4444; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .live-pill::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: #EF4444; animation: pulse-dot 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .game-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; margin-top: 10px; }
+
+    /* ── FULLSCREEN MODE ── */
+    .app.fullscreen {
+      position: fixed; inset: 0; z-index: 9999;
+    }
+    /* Portrait device → rotate to landscape */
+    @media (orientation: portrait) {
+      .app.fullscreen {
+        top: 50%; left: 50%;
+        width: 100vh;
+        height: 100vw;
+        transform: translate(-50%, -50%) rotate(90deg);
+      }
+    }
+    .app.fullscreen .top-bar { display: none; }
+    .app.fullscreen .content-area { display: none; }
+    .app.fullscreen .video-player { aspect-ratio: unset; flex: 1; }
+    .app.fullscreen .video-bottom { display: none; }
+
+    /* Fullscreen overlay (shown only in fullscreen) */
+    .fs-overlay {
+      display: none;
+      position: absolute; inset: 0;
+      flex-direction: column;
+      justify-content: space-between;
+      z-index: 20;
+      transition: opacity 0.3s ease;
+    }
+    .app.fullscreen .fs-overlay { display: flex; }
+    .fs-overlay.hidden { opacity: 0; pointer-events: none !important; }
+
+    .fs-top {
+      background: linear-gradient(180deg, rgba(0,0,0,0.75) 0%, transparent 100%);
+      padding: 20px 20px 48px;
+      display: flex; align-items: center; justify-content: flex-end;
+      pointer-events: none;
+    }
+    .fs-top > * { pointer-events: all; }
+
+    .fs-mid {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      display: flex; align-items: center; gap: 36px;
+    }
+    .fs-ctrl {
+      width: 48px; height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.9); cursor: pointer;
+    }
+    .fs-ctrl.play {
+      width: 60px; height: 60px;
+      background: rgba(255,255,255,0.15); border-radius: 50%;
+      backdrop-filter: blur(4px);
+    }
+    .fs-skip-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+    .fs-skip-label { font-size: 9px; font-weight: 600; color: rgba(255,255,255,0.7); }
+
+    .fs-bottom {
+      background: linear-gradient(0deg, rgba(0,0,0,0.85) 0%, transparent 100%);
+      padding: 40px 20px 28px;
+      display: flex; flex-direction: column; gap: 10px;
+      pointer-events: none;
+    }
+    .fs-bottom > * { pointer-events: all; }
+
+    .fs-progress {
+      height: 3px; background: rgba(255,255,255,0.2); border-radius: 2px;
+      position: relative; cursor: pointer;
+    }
+    .fs-progress-fill { width: 62%; height: 100%; background: var(--prime-blue); border-radius: 2px; }
+    .fs-progress-dot {
+      position: absolute; left: 62%; top: 50%; transform: translate(-50%, -50%);
+      width: 11px; height: 11px; border-radius: 50%; background: #fff;
+    }
+    .fs-bottom-row { display: flex; align-items: center; justify-content: space-between; }
+    .fs-time { font-size: 11px; color: rgba(255,255,255,0.7); font-variant-numeric: tabular-nums; }
+
+    .fs-persona-pill {
+      display: flex; align-items: center; gap: 7px;
+      background: rgba(0,168,225,0.18); border: 1px solid rgba(0,168,225,0.45);
+      border-radius: 100px; padding: 6px 14px 6px 10px;
+      cursor: pointer; backdrop-filter: blur(12px);
+    }
+    .fs-persona-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--prime-blue); animation: pulse-dot 1.5s ease-in-out infinite; }
+    .fs-persona-text { font-size: 12px; font-weight: 600; color: var(--prime-blue); }
+
+    .fs-exit-btn {
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.8); cursor: pointer;
+    }
+
+    /* ── BOTTOM SHEET ── */
+    .bottom-sheet {
+      position: absolute; inset: 0; z-index: 300;
+      pointer-events: none;
+    }
+    .bottom-sheet.open { pointer-events: all; }
+
+    .sheet-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.4s ease;
+    }
+    .bottom-sheet.open .sheet-backdrop {
+      background: rgba(0,0,0,0.65);
+      backdrop-filter: blur(2px);
+    }
+
+    .sheet-body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 78%;
+      background: #1A1A1A;
+      border-radius: 18px 18px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      transform: translateY(100%);
+      transition: transform 0.45s var(--ease-smooth);
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .bottom-sheet.open .sheet-body { transform: translateY(0); }
+
+    .sheet-handle { display: flex; justify-content: center; padding: 10px 0 6px; flex-shrink: 0; }
+    .sheet-handle-bar { width: 36px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.15); }
+
+    .sheet-header { padding: 0 16px 12px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+    .sheet-header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .sheet-title-wrap { display: flex; align-items: center; gap: 8px; }
+    .sheet-logo { width: 20px; height: 20px; border-radius: 50%; object-fit: contain; }
+    .sheet-title { font-size: 14px; font-weight: 700; color: #fff; }
+    .sheet-title span { color: var(--prime-blue); }
+    .sheet-close {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--surface-3); border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-dim); font-size: 13px;
+    }
+
+    .sheet-tabs { display: flex; gap: 4px; }
+    .sheet-tab {
+      flex: 1; padding: 6px 8px; border-radius: 6px; border: none;
+      background: transparent; color: var(--text-dim);
+      font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+      cursor: pointer; transition: background 0.2s, color 0.2s; text-align: center;
+    }
+    .sheet-tab.active { background: var(--prime-blue-dim); color: var(--prime-blue); }
+
+    .sheet-alert {
+      margin: 10px 16px 0; padding: 10px 12px;
+      background: rgba(158,124,12,0.18);
+      border: 1px solid rgba(158,124,12,0.4);
+      border-left: 3px solid #9E7C0C;
+      border-radius: 6px;
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    .sheet-alert-icon { font-size: 14px; }
+    .sheet-alert-text { font-size: 11px; color: rgba(255,255,255,0.9); line-height: 1.4; }
+    .sheet-alert-text strong { color: #FFD166; font-weight: 700; }
+
+    .sheet-scroll { flex: 1; overflow-y: auto; padding: 14px 16px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .sheet-scroll::-webkit-scrollbar { display: none; }
+
+    .s-player { display: flex; flex-direction: column; gap: 8px; }
+    .s-player-header { display: flex; align-items: center; gap: 10px; }
+    .s-avatar { width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0; overflow: hidden; border: 2px solid transparent; }
+    .s-avatar.ravens    { border-color: rgba(36,23,115,0.6); background: rgba(36,23,115,0.3); }
+    .s-avatar.bengals   { border-color: rgba(251,79,20,0.5); background: rgba(251,79,20,0.12); }
+    .s-avatar.broadcast { border-color: rgba(0,168,225,0.35); background: rgba(0,168,225,0.1); }
+    .s-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .s-player-name { font-size: 13px; font-weight: 600; color: #fff; }
+    .s-player-meta { font-size: 10px; color: var(--text-dim); margin-top: 1px; }
+    .s-featured-tag {
+      margin-left: auto;
+      font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #9E7C0C; background: rgba(158,124,12,0.15);
+      border: 1px solid rgba(158,124,12,0.3); border-radius: 3px; padding: 2px 5px;
+    }
+
+    .s-card {
+      background: var(--surface-2); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; overflow: hidden; text-decoration: none; display: block;
+    }
+    .s-card:active { opacity: 0.8; }
+    .s-card-inner { display: flex; gap: 10px; padding: 11px; align-items: flex-start; }
+    .s-card-thumb {
+      width: 52px; height: 52px; border-radius: 6px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; position: relative;
+    }
+    .s-card-thumb.twitch  { background: rgba(145,70,255,0.15); }
+    .s-card-thumb.music   { background: rgba(0,168,225,0.15); }
+    .s-card-thumb.audible { background: rgba(248,153,29,0.15); }
+    .s-card-thumb img { width: 28px; height: 28px; object-fit: contain; }
+    .s-card-thumb-badge {
+      position: absolute; bottom: 3px; left: 50%; transform: translateX(-50%);
+      font-size: 7px; font-weight: 700; text-transform: uppercase;
+      padding: 1px 3px; border-radius: 2px; color: #fff; white-space: nowrap;
+    }
+    .s-card-thumb.twitch  .s-card-thumb-badge { background: #9146FF; }
+    .s-card-thumb.music   .s-card-thumb-badge { background: #00A8E1; }
+    .s-card-thumb.audible .s-card-thumb-badge { background: #F8991D; }
+    .s-card-info { flex: 1; min-width: 0; }
+    .s-card-platform { font-size: 8px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; display: flex; align-items: center; gap: 4px; }
+    .s-card-platform.twitch  { color: var(--twitch); }
+    .s-card-platform.music   { color: var(--prime-blue); }
+    .s-card-platform.audible { color: var(--audible); }
+    .s-card-platform img { width: 10px; height: 10px; object-fit: contain; }
+    .s-card-title { font-size: 12px; font-weight: 600; color: #fff; line-height: 1.3; margin-bottom: 3px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .s-card-meta { font-size: 10px; color: var(--text-dim); }
+    .s-card-action { border-top: 1px solid rgba(255,255,255,0.05); padding: 8px 11px; display: flex; align-items: center; justify-content: space-between; }
+    .s-card-action-label { font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+    .s-card.twitch-card  .s-card-action-label { color: var(--twitch); }
+    .s-card.podcast-card .s-card-action-label { color: var(--prime-blue); }
+    .s-card.audible-card .s-card-action-label { color: var(--audible); }
+    .s-card-arrow { font-size: 11px; color: var(--text-muted); }
+    .add-to-list-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 4px;
+      color: var(--text-dim);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 8px; cursor: pointer; white-space: nowrap;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .add-to-list-btn.added { border-color: rgba(0,168,225,0.5); color: var(--prime-blue); }
+
+    .s-label { font-size: 9px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); padding-bottom: 4px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+    .sheet-footer { padding: 10px 16px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+    .sheet-footer-text { font-size: 9px; color: var(--text-muted); text-align: center; }
+    .sheet-footer-text a { color: var(--prime-blue); text-decoration: none; }
+
+    /* ── DEMO BADGE ── */
+    .demo-badge {
+      position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+      background: rgba(15,15,15,0.92); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #555; z-index: 400; backdrop-filter: blur(8px); white-space: nowrap;
+      pointer-events: none;
+    }
+    .demo-badge span { color: var(--prime-blue); }
+  </style>
+</head>
+<body>
+  <div class="app">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+      <div class="top-bar-back">
+        <svg width="10" height="18" viewBox="0 0 10 18" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 1L1 9l8 8"/>
+        </svg>
+      </div>
+      <div class="top-bar-title">Ravens vs. Bengals</div>
+      <div class="top-bar-icons">
+        <div class="top-bar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M2 8.5A6.5 6.5 0 0 1 8.5 2h7A6.5 6.5 0 0 1 22 8.5v7a6.5 6.5 0 0 1-6.5 6.5h-7A6.5 6.5 0 0 1 2 15.5v-7z"/>
+            <circle cx="12" cy="12" r="2.5"/>
+            <circle cx="17.5" cy="6.5" r="1"/>
+          </svg>
+        </div>
+        <div class="top-bar-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- VIDEO PLAYER -->
+    <div class="video-player">
+      <div class="video-bg"></div>
+      <div class="video-dim"></div>
+
+      <!-- Scorebug -->
+      <div class="m-scorebug">
+        <div class="m-score-team ravens">
+          <img src="/brand_assets/baltimore-ravens.png" alt="Ravens">
+          <span class="m-score-num">23</span>
+        </div>
+        <div class="m-score-mid">
+          <img src="/brand_assets/thursday-night-football.png" alt="TNF">
+          <div class="m-score-mid-info">4th · <span id="clock">8:41</span></div>
+        </div>
+        <div class="m-score-team bengals">
+          <span class="m-score-num">17</span>
+          <img src="/brand_assets/cincinnati-bengals.png" alt="Bengals">
+        </div>
+      </div>
+
+      <!-- Touchdown -->
+      <div class="td-banner">
+        <div class="td-label">TOUCHDOWN</div>
+        <div class="td-sub">Lamar Jackson → Zay Flowers · 24 yd</div>
+      </div>
+
+      <!-- Fullscreen overlay (controls + persona, only active in fullscreen) -->
+      <div class="fs-overlay" id="fsOverlay">
+        <div class="fs-top">
+          <div class="fs-exit-btn" onclick="toggleFullscreen()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round">
+              <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/>
+              <line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/>
+            </svg>
+          </div>
+        </div>
+        <div class="fs-mid">
+          <div class="fs-skip-wrap">
+            <div class="fs-ctrl">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 5V2L8 6l4 4V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>
+            </div>
+            <div class="fs-skip-label">10</div>
+          </div>
+          <div class="fs-ctrl play">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          </div>
+          <div class="fs-skip-wrap">
+            <div class="fs-ctrl">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="white"><path d="M12 5V2l4 4-4 4V7c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6h2c0 4.42-3.58 8-8 8s-8-3.58-8-8 3.58-8 8-8z"/></svg>
+            </div>
+            <div class="fs-skip-label">10</div>
+          </div>
+        </div>
+        <div class="fs-bottom">
+          <div class="fs-progress">
+            <div class="fs-progress-fill"></div>
+            <div class="fs-progress-dot"></div>
+          </div>
+          <div class="fs-bottom-row">
+            <span class="fs-time">3:24:18 / 4:00:00</span>
+            <div class="fs-persona-pill" onclick="openSheet()">
+              <div class="fs-persona-dot"></div>
+              <span class="fs-persona-text">Prime Persona</span>
+            </div>
+            <div class="fs-exit-btn" onclick="toggleFullscreen()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" stroke-linecap="round">
+                <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/>
+                <line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Video controls -->
+      <div class="video-controls">
+
+        <div class="video-bottom">
+          <div class="progress-bar">
+            <div class="progress-fill"></div>
+            <div class="progress-dot"></div>
+          </div>
+          <div class="video-bottom-row">
+            <span class="video-time">3:24:18 / 4:00:00</span>
+            <div class="video-enlarge" onclick="toggleFullscreen()">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round">
+                <polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>
+                <line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div class="content-area">
+
+      <!-- Feature row (X-Ray style) -->
+      <div class="feature-row">
+        <div class="feature-btn">
+          <div class="feature-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <span class="feature-btn-label">Subtitles</span>
+        </div>
+        <div class="feature-btn">
+          <div class="feature-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+          </div>
+          <span class="feature-btn-label">Audio</span>
+        </div>
+        <div class="feature-btn persona" onclick="openSheet()">
+          <div class="feature-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+          </div>
+          <span class="feature-btn-label">Prime Persona</span>
+        </div>
+        <div class="feature-btn">
+          <div class="feature-btn-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>
+            </svg>
+          </div>
+          <span class="feature-btn-label">More</span>
+        </div>
+      </div>
+
+      <!-- Game info -->
+      <div class="game-info">
+        <div class="live-pill">Live</div>
+        <div class="game-info-title">Baltimore Ravens vs. Cincinnati Bengals</div>
+        <div class="game-info-meta">Thursday Night Football · Week 13 · Amazon Prime Video</div>
+        <div class="game-desc">Lamar Jackson leads the Ravens on a 4th-quarter drive, capping a 24-yard TD pass to Zay Flowers to extend the lead to 23–17.</div>
+      </div>
+
+    </div>
+
+    <!-- BOTTOM SHEET -->
+    <div class="bottom-sheet" id="bottomSheet">
+      <div class="sheet-backdrop" onclick="closeSheet()"></div>
+      <div class="sheet-body">
+
+        <div class="sheet-handle"><div class="sheet-handle-bar"></div></div>
+
+        <div class="sheet-header">
+          <div class="sheet-header-top">
+            <div class="sheet-title-wrap">
+              <img src="/brand_assets/prime-sports-logo.jpg" alt="Prime" class="sheet-logo">
+              <span class="sheet-title">Prime <span>Persona</span></span>
+            </div>
+            <button class="sheet-close" onclick="closeSheet()">✕</button>
+          </div>
+          <div class="sheet-tabs">
+            <button class="sheet-tab active" onclick="switchTab(this,'all')">All</button>
+            <button class="sheet-tab" onclick="switchTab(this,'players')">Players</button>
+            <button class="sheet-tab" onclick="switchTab(this,'broadcast')">Broadcast</button>
+          </div>
+        </div>
+
+        <div class="sheet-alert">
+          <div class="sheet-alert-icon">⚡</div>
+          <div class="sheet-alert-text">
+            <strong>Lamar Jackson</strong> just threw a TD — see his content across the Amazon ecosystem
+          </div>
+        </div>
+
+        <div class="sheet-scroll">
+
+          <div class="s-label" data-cat="players-header-label" style="display:none;">Content from Players</div>
+
+          <!-- LAMAR JACKSON -->
+          <div class="s-player" data-cat="player">
+            <div class="s-player-header">
+              <div class="s-avatar ravens"><img src="/brand_assets/lamar-jackson.png" alt="Lamar Jackson"></div>
+              <div>
+                <div class="s-player-name">Lamar Jackson</div>
+                <div class="s-player-meta">QB · Baltimore Ravens · #8</div>
+              </div>
+              <div class="s-featured-tag">Featured</div>
+            </div>
+            <a href="https://www.audible.com/pd/Lamar-Jackson-Audiobook/B0F5YRYYWN" target="_blank" class="s-card audible-card">
+              <div class="s-card-inner">
+                <div class="s-card-thumb audible">
+                  <img src="/brand_assets/audible-logo.png" alt="Audible">
+                  <div class="s-card-thumb-badge">Audiobook</div>
+                </div>
+                <div class="s-card-info">
+                  <div class="s-card-platform audible"><img src="/brand_assets/audible-logo.png" alt=""> Audible</div>
+                  <div class="s-card-title">The Inspiring Story of One of Football's Star Quarterbacks</div>
+                  <div class="s-card-meta">By Clayton Geoffreys · 2h 43m</div>
+                </div>
+              </div>
+              <div class="s-card-action">
+                <span class="s-card-action-label">Listen on Audible</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
+              </div>
+            </a>
+          </div>
+
+          <div class="s-label" data-cat="player-more-label">Content from other people</div>
+
+          <!-- JA'MARR CHASE -->
+          <div class="s-player" data-cat="player">
+            <div class="s-player-header">
+              <div class="s-avatar bengals"><img src="/brand_assets/jamarr-chase.png" alt="Ja'Marr Chase"></div>
+              <div>
+                <div class="s-player-name">Ja'Marr Chase</div>
+                <div class="s-player-meta">WR · Cincinnati Bengals · #1</div>
+              </div>
+            </div>
+            <a href="https://www.twitch.tv/jamarrchase10" target="_blank" class="s-card twitch-card">
+              <div class="s-card-inner">
+                <div class="s-card-thumb twitch">
+                  <img src="/brand_assets/twitch-logo.png" alt="Twitch">
+                  <div class="s-card-thumb-badge">Channel</div>
+                </div>
+                <div class="s-card-info">
+                  <div class="s-card-platform twitch"><img src="/brand_assets/twitch-logo.png" alt=""> Twitch</div>
+                  <div class="s-card-title">Channel: jamarrchase10</div>
+                  <div class="s-card-meta">Recent broadcast: ARC Raiders</div>
+                </div>
+              </div>
+              <div class="s-card-action">
+                <span class="s-card-action-label">Watch on Twitch</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
+              </div>
+            </a>
+          </div>
+
+          <!-- MARLON HUMPHREY -->
+          <div class="s-player" data-cat="player">
+            <div class="s-player-header">
+              <div class="s-avatar ravens"><img src="/brand_assets/marlon-humphrey.png" alt="Marlon Humphrey"></div>
+              <div>
+                <div class="s-player-name">Marlon Humphrey</div>
+                <div class="s-player-meta">CB · Baltimore Ravens · #44</div>
+              </div>
+            </div>
+            <a href="https://music.amazon.com/podcasts/05f91677-d644-4cec-b1b9-4390820fb2bc/the-marlon-humphrey-show" target="_blank" class="s-card podcast-card">
+              <div class="s-card-inner">
+                <div class="s-card-thumb music">
+                  <img src="/brand_assets/amazon-music-logo.png" alt="Amazon Music">
+                  <div class="s-card-thumb-badge">Podcast</div>
+                </div>
+                <div class="s-card-info">
+                  <div class="s-card-platform music"><img src="/brand_assets/amazon-music-logo.png" alt=""> Amazon Music</div>
+                  <div class="s-card-title">The Marlon Humphrey Show</div>
+                  <div class="s-card-meta">Latest ep · "New Era for The Ravens • Belichick Snubbed • Kyle Hamilton's Top 5 • America's Best QB?" · 1 hr 4 min</div>
+                </div>
+              </div>
+              <div class="s-card-action">
+                <span class="s-card-action-label">Listen on Amazon Music</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
+              </div>
+            </a>
+          </div>
+
+          <div class="s-label" data-cat="broadcast-label" style="display:none;">Content from Broadcast</div>
+
+          <!-- RICHARD SHERMAN -->
+          <div class="s-player" data-cat="broadcast">
+            <div class="s-player-header">
+              <div class="s-avatar broadcast"><img src="/brand_assets/richard-sherman.jpg" alt="Richard Sherman" style="object-position:center 20%;"></div>
+              <div>
+                <div class="s-player-name">Richard Sherman</div>
+                <div class="s-player-meta">Analyst · Thursday Night Football</div>
+              </div>
+            </div>
+            <a href="https://music.amazon.com/podcasts/6d94e62e-1b2b-4475-bd71-415dcf768531/the-richard-sherman-podcast" target="_blank" class="s-card podcast-card">
+              <div class="s-card-inner">
+                <div class="s-card-thumb music">
+                  <img src="/brand_assets/amazon-music-logo.png" alt="Amazon Music">
+                  <div class="s-card-thumb-badge">Podcast</div>
+                </div>
+                <div class="s-card-info">
+                  <div class="s-card-platform music"><img src="/brand_assets/amazon-music-logo.png" alt=""> Amazon Music</div>
+                  <div class="s-card-title">The Richard Sherman Podcast</div>
+                  <div class="s-card-meta">Latest ep · "Why Seahawks PAID Jaxon Smith-Njigba $42M, 49ers-Trent Duffy drama, OBJ next team" · 29 min</div>
+                </div>
+              </div>
+              <div class="s-card-action">
+                <span class="s-card-action-label">Listen on Amazon Music</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
+              </div>
+            </a>
+          </div>
+
+          <!-- AL MICHAELS -->
+          <div class="s-player" data-cat="broadcast">
+            <div class="s-player-header">
+              <div class="s-avatar broadcast"><img src="/brand_assets/al-michaels.jpg" alt="Al Michaels"></div>
+              <div>
+                <div class="s-player-name">Al Michaels</div>
+                <div class="s-player-meta">Play-by-Play · Thursday Night Football</div>
+              </div>
+            </div>
+            <a href="https://www.audible.com/pd/You-Cant-Make-This-Up-Audiobook/B00OTYC3TY" target="_blank" class="s-card audible-card">
+              <div class="s-card-inner">
+                <div class="s-card-thumb audible">
+                  <img src="/brand_assets/audible-logo.png" alt="Audible">
+                  <div class="s-card-thumb-badge">Audiobook</div>
+                </div>
+                <div class="s-card-info">
+                  <div class="s-card-platform audible"><img src="/brand_assets/audible-logo.png" alt=""> Audible</div>
+                  <div class="s-card-title">You Can't Make This Up</div>
+                  <div class="s-card-meta">By Al Michaels · 9h 55m</div>
+                </div>
+              </div>
+              <div class="s-card-action">
+                <span class="s-card-action-label">Listen on Audible</span>
+                <button class="add-to-list-btn" onclick="toggleList(this,event)">+ Add to List</button>
+              </div>
+            </a>
+          </div>
+
+        </div>
+
+        <div class="sheet-footer">
+          <div class="sheet-footer-text">
+            Content powered by <a href="#">Twitch</a>, <a href="#">Amazon Music</a> &amp; <a href="#">Audible</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="demo-badge"><span>Prime Persona</span> · Mobile Demo</div>
+
+  <script>
+    function toggleList(btn, e) {
+      e.preventDefault(); e.stopPropagation();
+      btn.classList.toggle('added');
+      btn.textContent = btn.classList.contains('added') ? '✓ Added' : '+ Add to List';
+    }
+
+    function openSheet() {
+      document.getElementById('bottomSheet').classList.add('open');
+    }
+    function closeSheet() {
+      document.getElementById('bottomSheet').classList.remove('open');
+    }
+
+    // ── FULLSCREEN ──
+    let controlsTimer;
+    const app = document.querySelector('.app');
+    const fsOverlay = document.getElementById('fsOverlay');
+
+    function showFsControls() {
+      fsOverlay.classList.remove('hidden');
+      clearTimeout(controlsTimer);
+      controlsTimer = setTimeout(() => fsOverlay.classList.add('hidden'), 3000);
+    }
+
+    async function toggleFullscreen() {
+      if (app.classList.contains('fullscreen')) {
+        app.classList.remove('fullscreen');
+        clearTimeout(controlsTimer);
+        if (document.fullscreenElement) await document.exitFullscreen().catch(() => {});
+      } else {
+        app.classList.add('fullscreen');
+        try { await document.documentElement.requestFullscreen(); } catch(e) {}
+        showFsControls();
+      }
+    }
+
+    // Tap video in fullscreen to toggle controls
+    document.querySelector('.video-player').addEventListener('click', (e) => {
+      if (!app.classList.contains('fullscreen')) return;
+      if (e.target.closest('.fs-persona-pill') || e.target.closest('.fs-exit-btn')) return;
+      if (fsOverlay.classList.contains('hidden')) {
+        showFsControls();
+      } else {
+        fsOverlay.classList.add('hidden');
+        clearTimeout(controlsTimer);
+      }
+    });
+
+    // Sync if user exits fullscreen via browser (e.g. swipe/back)
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement) app.classList.remove('fullscreen');
+    });
+    function switchTab(el, tab) {
+      document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+      el.classList.add('active');
+      const all = tab === 'all', players = tab === 'players', broadcast = tab === 'broadcast';
+      document.querySelectorAll('[data-cat="player"]').forEach(e => e.style.display = (all || players) ? '' : 'none');
+      document.querySelector('[data-cat="player-more-label"]').style.display = all ? '' : 'none';
+      document.querySelector('[data-cat="players-header-label"]').style.display = players ? '' : 'none';
+      document.querySelector('[data-cat="broadcast-label"]').style.display = broadcast ? '' : 'none';
+      document.querySelectorAll('[data-cat="broadcast"]').forEach(e => e.style.display = (all || broadcast) ? '' : 'none');
+    }
+
+    setTimeout(openSheet, 3000);
+
+    let secs = 8 * 60 + 41;
+    setInterval(() => {
+      if (secs > 0) secs--;
+      const m = Math.floor(secs / 60);
+      const s = secs % 60;
+      document.getElementById('clock').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+    }, 1000);
+  </script>
+</body>
+</html>
