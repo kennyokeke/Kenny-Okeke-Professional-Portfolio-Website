@@ -680,6 +680,7 @@
       line-height: 1.4;
     }
     .featured-alert-text strong { color: #FFD166; font-weight: 700; }
+    .featured-alert.hidden { display: none !important; }
 
     /* Panel scroll */
     .panel-scroll {
@@ -1509,7 +1510,7 @@
             </div>
           </div>
 
-          <div class="featured-alert">
+          <div class="featured-alert" id="deskAlert">
             <div class="featured-alert-icon">⚡</div>
             <div class="featured-alert-text">
               <strong>Lamar Jackson</strong> just threw a TD — see his content across the Amazon ecosystem
@@ -2099,6 +2100,7 @@
 
       // Broadcast sections
       document.querySelectorAll('[data-cat="broadcast"]').forEach(el => el.style.display = (all || broadcast) ? '' : 'none');
+      document.getElementById('deskAlert').classList.toggle('hidden', !all);
     }
 
     // Auto-open panel after a beat to demonstrate
