@@ -83,15 +83,18 @@
     /* Scorebug */
     .m-scorebug {
       position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
-      display: flex; align-items: center;
+      display: flex; flex-direction: column;
       border-radius: 5px; overflow: hidden;
       box-shadow: 0 2px 12px rgba(0,0,0,0.8);
       z-index: 10;
     }
+    .m-scorebug-main { display: flex; align-items: stretch; }
     .m-score-team { display: flex; align-items: center; gap: 5px; padding: 5px 9px; }
     .m-score-team.ravens  { background: #241773; }
     .m-score-team.bengals { background: #4a1800; flex-direction: row-reverse; }
     .m-score-team img { width: 20px; height: 20px; object-fit: contain; }
+    .m-score-team-inner { display: flex; flex-direction: column; align-items: center; gap: 1px; }
+    .m-score-record { font-size: 7px; font-weight: 600; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; }
     .m-score-num { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: #fff; line-height: 1; }
     .m-score-mid {
       background: #0057B8; padding: 4px 8px;
@@ -99,6 +102,12 @@
     }
     .m-score-mid img { height: 13px; object-fit: contain; }
     .m-score-mid-info { font-size: 8px; font-weight: 600; color: rgba(255,255,255,0.8); letter-spacing: 0.04em; white-space: nowrap; }
+    .m-scorebug-strip {
+      background: #001f5c; height: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 7px; font-weight: 600; color: rgba(255,255,255,0.85);
+      letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
+    }
 
     /* Touchdown */
     .td-banner {
@@ -495,18 +504,27 @@
 
       <!-- Scorebug -->
       <div class="m-scorebug">
-        <div class="m-score-team ravens">
-          <img src="/brand_assets/baltimore-ravens.png" alt="Ravens">
-          <span class="m-score-num">23</span>
+        <div class="m-scorebug-main">
+          <div class="m-score-team ravens">
+            <div class="m-score-team-inner">
+              <img src="/brand_assets/baltimore-ravens.png" alt="Ravens">
+              <span class="m-score-record">9-3</span>
+            </div>
+            <span class="m-score-num">23</span>
+          </div>
+          <div class="m-score-mid">
+            <img src="/brand_assets/thursday-night-football.png" alt="TNF">
+            <div class="m-score-mid-info">4th · <span id="clock">8:41</span></div>
+          </div>
+          <div class="m-score-team bengals">
+            <span class="m-score-num">17</span>
+            <div class="m-score-team-inner">
+              <img src="/brand_assets/cincinnati-bengals.png" alt="Bengals">
+              <span class="m-score-record">7-5</span>
+            </div>
+          </div>
         </div>
-        <div class="m-score-mid">
-          <img src="/brand_assets/thursday-night-football.png" alt="TNF">
-          <div class="m-score-mid-info">4th · <span id="clock">8:41</span></div>
-        </div>
-        <div class="m-score-team bengals">
-          <span class="m-score-num">17</span>
-          <img src="/brand_assets/cincinnati-bengals.png" alt="Bengals">
-        </div>
+        <div class="m-scorebug-strip">2nd &amp; 7 · CIN 24</div>
       </div>
 
       <!-- Touchdown -->
