@@ -256,7 +256,6 @@
       width: 70%;
       pointer-events: none;
       z-index: 10;
-      transform-origin: top center;
     }
     .broadcast-hud > * { pointer-events: all; }
 
@@ -2142,36 +2141,17 @@
     /* ─────────────────────────────────────────────
        DESKTOP JS
     ───────────────────────────────────────────── */
-    const _hud = document.querySelector('.broadcast-hud');
-    const _vw  = document.getElementById('videoWrap');
-    // Capture base width immediately before any panel opens
-    const _baseVWWidth = _vw ? _vw.getBoundingClientRect().width : null;
-
-    function updateHudScale() {
-      if (!_hud || !_vw || !_baseVWWidth) return;
-      const current = _vw.getBoundingClientRect().width;
-      const scale = current / _baseVWWidth;
-      _hud.style.transform = `translateX(-50%) scale(${scale})`;
-    }
-
     function openPanel() {
       document.getElementById('personaPanel').classList.add('open');
-      _vw.classList.add('panel-open');
+      document.getElementById('videoWrap').classList.add('panel-open');
       document.getElementById('personaTrigger').style.display = 'none';
-      setTimeout(updateHudScale, 520); // after CSS transition
     }
 
     function closePanel() {
       document.getElementById('personaPanel').classList.remove('open');
-      _vw.classList.remove('panel-open');
+      document.getElementById('videoWrap').classList.remove('panel-open');
       document.getElementById('personaTrigger').style.display = '';
-      setTimeout(updateHudScale, 520);
     }
-
-    window.addEventListener('resize', () => {
-      _baseVWWidth = null; // recalibrate on resize
-      updateHudScale();
-    });
 
     function switchTab(el, tab) {
       document.querySelectorAll('.panel-tab').forEach(t => t.classList.remove('active'));
