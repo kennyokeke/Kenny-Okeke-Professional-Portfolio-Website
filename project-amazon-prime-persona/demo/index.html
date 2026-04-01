@@ -248,6 +248,17 @@
     }
 
     /* ── SCOREBUG ── */
+    /* Wrapper that matches the game image bounds (70% wide, centered) */
+    .broadcast-hud {
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 70%;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .broadcast-hud > * { pointer-events: all; }
+
     .scorebug {
       position: absolute;
       top: 16px;
@@ -558,11 +569,10 @@
     .tnf-badge {
       position: absolute;
       top: 16px;
-      right: 80px;
+      right: 0;
       display: flex;
       align-items: center;
       gap: 8px;
-      z-index: 10;
     }
     .tnf-text {
       font-family: 'Bebas Neue', sans-serif;
@@ -1459,41 +1469,44 @@
               <div class="replay-sub">Lamar Jackson → Zay Flowers &nbsp;·&nbsp; 24 yd</div>
             </div>
 
-            <!-- Score bug -->
-            <div class="scorebug">
-              <div class="scorebug-main">
-                <div class="scorebug-team ravens">
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                    <img src="/brand_assets/baltimore-ravens.png" alt="Ravens">
-                    <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">9-3</div>
+            <!-- HUD: scorebug + TNF badge, constrained to image bounds -->
+            <div class="broadcast-hud">
+              <!-- Score bug -->
+              <div class="scorebug">
+                <div class="scorebug-main">
+                  <div class="scorebug-team ravens">
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                      <img src="/brand_assets/baltimore-ravens.png" alt="Ravens">
+                      <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">9-3</div>
+                    </div>
+                    <div class="team-score">23</div>
                   </div>
-                  <div class="team-score">23</div>
+                  <div class="scorebug-mid">
+                    <div class="scorebug-mid-brand">
+                      <img src="/brand_assets/thursday-night-football.png" alt="Thursday Night Football">
+                    </div>
+                    <div class="scorebug-gameinfo">
+                      <span class="scorebug-qtr">4th</span>
+                      <span class="scorebug-clock" id="clock">8:41</span>
+                    </div>
+                  </div>
+                  <div class="scorebug-team bengals">
+                    <div class="team-score">17</div>
+                    <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+                      <img src="/brand_assets/cincinnati-bengals.png" alt="Bengals">
+                      <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">7-5</div>
+                    </div>
+                  </div>
                 </div>
-                <div class="scorebug-mid">
-                  <div class="scorebug-mid-brand">
-                    <img src="/brand_assets/thursday-night-football.png" alt="Thursday Night Football">
-                  </div>
-                  <div class="scorebug-gameinfo">
-                    <span class="scorebug-qtr">4th</span>
-                    <span class="scorebug-clock" id="clock">8:41</span>
-                  </div>
-                </div>
-                <div class="scorebug-team bengals">
-                  <div class="team-score">17</div>
-                  <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-                    <img src="/brand_assets/cincinnati-bengals.png" alt="Bengals">
-                    <div style="font-size:8px;font-weight:600;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">7-5</div>
-                  </div>
+                <div class="scorebug-strip">
+                  <span class="scorebug-down" style="flex:1;text-align:center;">2nd &amp; 7 · CIN 24</span>
                 </div>
               </div>
-              <div class="scorebug-strip">
-                <span class="scorebug-down" style="flex:1;text-align:center;">2nd &amp; 7 · CIN 24</span>
-              </div>
-            </div>
 
-            <!-- TNF Badge -->
-            <div class="tnf-badge">
-              <img src="/brand_assets/thursday-night-football.png" alt="Thursday Night Football" style="height:44px;object-fit:contain;">
+              <!-- TNF Badge -->
+              <div class="tnf-badge">
+                <img src="/brand_assets/thursday-night-football.png" alt="Thursday Night Football" style="height:44px;object-fit:contain;">
+              </div>
             </div>
 
             <!-- Play notification -->
