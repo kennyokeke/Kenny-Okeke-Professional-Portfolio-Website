@@ -1016,11 +1016,20 @@
     }
     .video-bg {
       position: absolute; inset: 0;
-      background: url('/brand_assets/ravens-bengals-image.webp') center 20% / cover no-repeat;
+      background: url('/brand_assets/ravens-bengals-image.webp') center 20% / cover no-repeat #000;
+      overflow: hidden;
+    }
+    .video-bg iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      width: max(100%, calc(56.25vw)); /* 16:9 fill */
+      height: max(100%, calc(100vw * 9/16));
+      transform: translate(-50%, -50%);
+      border: 0; pointer-events: none;
     }
     .video-dim {
       position: absolute; inset: 0;
-      background: rgba(0,0,0,0.38);
+      background: rgba(0,0,0,0.25);
     }
 
     /* Scorebug (mobile) */
@@ -1418,6 +1427,31 @@
 
     /* Mobile clock id */
     #m-clock { font-variant-numeric: tabular-nums; }
+
+    /* ── YOUTUBE IFRAME ── */
+    .yt-wrap {
+      position: absolute; inset: 0;
+      overflow: hidden;
+      /* Fallback static image shown if YouTube embedding is blocked */
+      background: url('/brand_assets/ravens-bengals-image.webp') center top / 70% auto no-repeat #080A0C;
+      z-index: 0;
+    }
+    .yt-wrap iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      /* 16:9 cover: fill whichever axis is larger */
+      width: max(100%, calc(100vh * 16/9));
+      height: max(100%, calc(100vw * 9/16));
+      transform: translate(-50%, -50%);
+      border: 0;
+      pointer-events: none;
+    }
+    /* Desktop progress dot uses left positioning for JS updates */
+    .progress-dot {
+      left: 78%;
+      right: auto !important;
+      transform: translate(-50%, -50%) !important;
+    }
   </style>
 </head>
 <body>
@@ -1458,9 +1492,9 @@
         <div class="video-wrap" id="videoWrap">
           <div class="broadcast">
 
-            <!-- Game image -->
-            <div style="position:absolute;inset:0;background:url('/brand_assets/ravens-bengals-image.webp') center top/70% auto no-repeat;"></div>
-            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.5) 0%,rgba(0,0,0,0.3) 40%,rgba(0,0,0,0.75) 100%);"></div>
+            <!-- YouTube video background (falls back to static image if embedding blocked) -->
+            <div class="yt-wrap" id="ytDesktopWrap"><div id="yt-desktop-player"></div></div>
+            <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.1) 40%,rgba(0,0,0,0.75) 100%);pointer-events:none;z-index:1;"></div>
 
             <!-- Replay scene -->
             <div class="replay-banner">
@@ -1535,7 +1569,7 @@
 
             <!-- Broadcast controls -->
             <div class="broadcast-controls">
-              <button class="ctrl-btn play">▶</button>
+              <button class="ctrl-btn play" onclick="toggleYTPlay()">▶</button>
               <div class="progress-bar">
                 <div class="progress-fill"></div>
                 <div class="progress-dot"></div>
@@ -1760,13 +1794,6 @@
         <div class="top-bar-icons">
           <div class="top-bar-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <path d="M2 8.5A6.5 6.5 0 0 1 8.5 2h7A6.5 6.5 0 0 1 22 8.5v7a6.5 6.5 0 0 1-6.5 6.5h-7A6.5 6.5 0 0 1 2 15.5v-7z"/>
-              <circle cx="12" cy="12" r="2.5"/>
-              <circle cx="17.5" cy="6.5" r="1"/>
-            </svg>
-          </div>
-          <div class="top-bar-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
               <polyline points="7 10 12 15 17 10"/>
               <line x1="12" y1="15" x2="12" y2="3"/>
@@ -1777,7 +1804,7 @@
 
       <!-- VIDEO PLAYER -->
       <div class="video-player" id="mVideoPlayer">
-        <div class="video-bg"></div>
+        <div class="video-bg"><div id="yt-mobile-player"></div></div>
         <div class="video-dim"></div>
 
         <!-- Scorebug -->
@@ -1826,7 +1853,7 @@
               </div>
               <div class="fs-skip-label">10</div>
             </div>
-            <div class="fs-ctrl play">
+            <div class="fs-ctrl play" onclick="toggleYTPlay()">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </div>
             <div class="fs-skip-wrap">
@@ -2172,12 +2199,12 @@
       // Broadcast sections
       document.querySelectorAll('[data-cat="broadcast"]').forEach(el => el.style.display = (all || broadcast) ? '' : 'none');
       document.getElementById('deskAlert').classList.toggle('hidden', !all);
+
+      // Featured tag: only visible in All tab
+      document.querySelectorAll('.player-featured-tag').forEach(el => el.style.display = all ? '' : 'none');
     }
 
-    // Auto-open panel after a beat to demonstrate
     if (document.documentElement.classList.contains('is-desktop')) {
-      setTimeout(openPanel, 2800);
-
       // Countdown clock (desktop)
       let dSecs = 8 * 60 + 41;
       setInterval(() => {
@@ -2254,11 +2281,12 @@
       document.querySelector('[data-mcat="broadcast-label"]').style.display = broadcast ? '' : 'none';
       document.querySelectorAll('[data-mcat="broadcast"]').forEach(e => e.style.display = (all || broadcast) ? '' : 'none');
       document.getElementById('mSheetAlert').classList.toggle('hidden', !all);
+
+      // Featured tag: only visible in All tab
+      document.querySelectorAll('.s-featured-tag').forEach(e => e.style.display = all ? '' : 'none');
     }
 
     if (document.documentElement.classList.contains('is-mobile')) {
-      setTimeout(openSheet, 3000);
-
       // Countdown clock (mobile)
       let mSecs = 8 * 60 + 41;
       setInterval(() => {
@@ -2269,6 +2297,110 @@
         if (el) el.textContent = `${m}:${s.toString().padStart(2,'0')}`;
       }, 1000);
     }
+
+    /* ─────────────────────────────────────────────
+       YOUTUBE VIDEO INTEGRATION
+       Clip: 5:23–6:11 (323s–371s), loop.
+       TD trigger: 5:40 (340s) → opens Prime Persona.
+    ───────────────────────────────────────────── */
+    const CLIP_START = 323, CLIP_END = 371, TD_TRIGGER = 340;
+    let ytPlayer = null, _panelTriggered = false, _pollInterval = null, _ytFallbackTimer = null;
+    const _IS_DESKTOP = document.documentElement.classList.contains('is-desktop');
+
+    // Fallback: if YouTube is blocked/unavailable, auto-open after delay
+    function _ytFallback() {
+      if (_panelTriggered) return;
+      _panelTriggered = true;
+      if (_pollInterval) { clearInterval(_pollInterval); _pollInterval = null; }
+      // Hide blocked iframe, let CSS fallback image show through
+      const wrap = document.getElementById(_IS_DESKTOP ? 'ytDesktopWrap' : 'yt-mobile-player');
+      if (wrap) { const ifrm = wrap.querySelector('iframe'); if (ifrm) ifrm.style.display = 'none'; }
+      if (_IS_DESKTOP) { setTimeout(openPanel, 2800); } else { setTimeout(openSheet, 3000); }
+    }
+
+    window.onYouTubeIframeAPIReady = function () {
+      const targetId = _IS_DESKTOP ? 'yt-desktop-player' : 'yt-mobile-player';
+      // Safety fallback if API loads but player never starts
+      _ytFallbackTimer = setTimeout(_ytFallback, 6000);
+      ytPlayer = new YT.Player(targetId, {
+        videoId: 'xFPgMdt1x8M',
+        playerVars: {
+          autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0,
+          modestbranding: 1, playsinline: 1, rel: 0, start: CLIP_START,
+        },
+        events: {
+          onReady(e) {
+            clearTimeout(_ytFallbackTimer);
+            e.target.playVideo();
+            _startYTPoll();
+          },
+          onStateChange(e) {
+            if (e.data === YT.PlayerState.ENDED) {
+              ytPlayer.seekTo(CLIP_START, true);
+              ytPlayer.playVideo();
+              _panelTriggered = false;
+            }
+            _updatePlayBtns(e.data === YT.PlayerState.PLAYING);
+          },
+          onError() { _ytFallback(); }
+        }
+      });
+    };
+
+    function _startYTPoll() {
+      if (_pollInterval) clearInterval(_pollInterval);
+      _pollInterval = setInterval(() => {
+        if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+        const t = ytPlayer.getCurrentTime();
+        // Loop clip
+        if (t >= CLIP_END) {
+          ytPlayer.seekTo(CLIP_START, true);
+          _panelTriggered = false;
+          return;
+        }
+        // TD trigger → open Prime Persona panel
+        if (t >= TD_TRIGGER && !_panelTriggered) {
+          _panelTriggered = true;
+          if (_IS_DESKTOP) openPanel(); else openSheet();
+        }
+        // Update progress bar (0–100%)
+        const pct = Math.max(0, Math.min(100, (t - CLIP_START) / (CLIP_END - CLIP_START) * 100));
+        _updateProgress(pct);
+        // Update time display (clip-relative)
+        const elapsed = Math.max(0, t - CLIP_START);
+        const ts = `${Math.floor(elapsed / 60)}:${String(Math.floor(elapsed % 60)).padStart(2,'0')} / 0:48`;
+        document.querySelectorAll('.ctrl-time, .video-time, .fs-time').forEach(el => el.textContent = ts);
+      }, 250);
+    }
+
+    function toggleYTPlay() {
+      if (!ytPlayer) return;
+      if (ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+      else ytPlayer.playVideo();
+    }
+
+    function _updatePlayBtns(playing) {
+      const dBtn = document.querySelector('.ctrl-btn.play');
+      if (dBtn) dBtn.innerHTML = playing ? '⏸' : '▶';
+      document.querySelectorAll('.fs-ctrl.play').forEach(btn => {
+        btn.innerHTML = playing
+          ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>'
+          : '<svg width="22" height="22" viewBox="0 0 24 24" fill="white"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
+      });
+    }
+
+    function _updateProgress(pct) {
+      document.querySelectorAll('.progress-fill, .m-progress-fill, .fs-progress-fill')
+        .forEach(el => el.style.width = pct + '%');
+      document.querySelectorAll('.progress-dot, .m-progress-dot, .fs-progress-dot')
+        .forEach(el => {
+          el.style.left = pct + '%';
+          el.style.right = 'auto';
+          el.style.transform = 'translate(-50%, -50%)';
+        });
+    }
   </script>
+  <!-- YouTube IFrame API (loads after onYouTubeIframeAPIReady is defined above) -->
+  <script src="https://www.youtube.com/iframe_api" onerror="_ytFallback && _ytFallback()"></script>
 </body>
 </html>

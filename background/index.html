@@ -57,6 +57,11 @@
       transform: translateY(-50%);
       text-align: center;
     }
+    /* Offset anchor scroll to account for fixed nav */
+    #story, #credentials, #skills {
+      scroll-margin-top: calc(var(--nav-h) + 16px);
+    }
+
     @media (max-width: 768px) {
       .story-group, .credentials-group, .skills-group { margin-left: 20px; margin-right: 0; }
       .story-group::before, .credentials-group::before, .skills-group::before { left: 0; }
