@@ -57,14 +57,9 @@
       transform: translateY(-50%);
       text-align: center;
     }
-    /* Anchor scroll: heading appears flush with nav bottom */
+    /* Prevent native anchor scroll from jumping under fixed nav */
     #story, #credentials, #skills {
-      scroll-margin-top: calc(var(--nav-h) - 80px);
-    }
-    @media (max-width: 480px) {
-      #story, #credentials, #skills {
-        scroll-margin-top: calc(var(--nav-h) - 56px);
-      }
+      scroll-margin-top: var(--nav-h);
     }
 
     @media (max-width: 768px) {
@@ -667,6 +662,26 @@
     });
     document.querySelectorAll('.edu-card-expandable').forEach(card => {
       card.addEventListener('click', () => card.classList.toggle('active'));
+    });
+
+    // Scroll section buttons so the heading lands flush below the nav
+    function scrollToHeading(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (!section) return;
+      const h2 = section.querySelector('h2');
+      const target = h2 || section;
+      const navH = document.querySelector('.nav')?.offsetHeight || 72;
+      // Walk offsetParent chain for layout position (unaffected by CSS transforms)
+      let top = 0, el = target;
+      while (el) { top += el.offsetTop; el = el.offsetParent; }
+      window.scrollTo({ top: top - navH, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('a[href="#story"], a[href="#credentials"], a[href="#skills"]').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        scrollToHeading(this.getAttribute('href').slice(1));
+      });
     });
   </script>
 </body>
