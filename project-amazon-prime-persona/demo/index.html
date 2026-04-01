@@ -1791,20 +1791,12 @@
           </svg>
         </div>
         <div class="top-bar-title">Ravens vs. Bengals</div>
-        <div class="top-bar-icons">
-          <div class="top-bar-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-              <polyline points="7 10 12 15 17 10"/>
-              <line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-          </div>
-        </div>
+        <div class="top-bar-icons"></div>
       </div>
 
       <!-- VIDEO PLAYER -->
       <div class="video-player" id="mVideoPlayer">
-        <div class="video-bg"><div id="yt-mobile-player"></div></div>
+        <div class="video-bg"></div>
         <div class="video-dim"></div>
 
         <!-- Scorebug -->
@@ -2319,10 +2311,12 @@
     }
 
     window.onYouTubeIframeAPIReady = function () {
-      const targetId = _IS_DESKTOP ? 'yt-desktop-player' : 'yt-mobile-player';
+      // Mobile uses static image — skip YouTube entirely
+      if (!_IS_DESKTOP) { _ytFallback(); return; }
+
       // Safety fallback if API loads but player never starts
       _ytFallbackTimer = setTimeout(_ytFallback, 6000);
-      ytPlayer = new YT.Player(targetId, {
+      ytPlayer = new YT.Player('yt-desktop-player', {
         videoId: 'xFPgMdt1x8M',
         playerVars: {
           autoplay: 1, mute: 1, controls: 0, disablekb: 1, fs: 0,
