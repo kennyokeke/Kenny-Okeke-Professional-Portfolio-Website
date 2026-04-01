@@ -664,14 +664,16 @@
       card.addEventListener('click', () => card.classList.toggle('active'));
     });
 
-    // Scroll section buttons so the heading lands flush below the nav
-    function scrollToHeading(sectionId) {
+    // Scroll section buttons so the section top border lands flush with the nav bottom
+    function scrollToSection(sectionId) {
       const section = document.getElementById(sectionId);
       if (!section) return;
-      const h2 = section.querySelector('h2');
-      const target = h2 || section;
       const navH = document.querySelector('.nav')?.offsetHeight || 72;
-      // Walk offsetParent chain for layout position (unaffected by CSS transforms)
+      // For #story the ID is on the content wrapper — target its first .about-section child
+      const target = sectionId === 'story'
+        ? (section.querySelector('.about-section') || section)
+        : section;
+      // Walk offsetParent chain (unaffected by CSS transforms)
       let top = 0, el = target;
       while (el) { top += el.offsetTop; el = el.offsetParent; }
       window.scrollTo({ top: top - navH, behavior: 'smooth' });
@@ -680,7 +682,7 @@
     document.querySelectorAll('a[href="#story"], a[href="#credentials"], a[href="#skills"]').forEach(btn => {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
-        scrollToHeading(this.getAttribute('href').slice(1));
+        scrollToSection(this.getAttribute('href').slice(1));
       });
     });
   </script>
