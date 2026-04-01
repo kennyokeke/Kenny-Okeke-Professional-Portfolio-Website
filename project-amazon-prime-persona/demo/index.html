@@ -1022,6 +1022,9 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.8);
       z-index: 10;
     }
+    @media (orientation: portrait) {
+      .m-scorebug { transform: translateX(-50%) scale(0.72); transform-origin: top center; }
+    }
     .m-scorebug-main { display: flex; align-items: stretch; }
     .m-score-team { display: flex; align-items: center; gap: 5px; padding: 5px 9px; }
     .m-score-team.ravens  { background: #241773; }
@@ -1042,6 +1045,13 @@
       font-size: 7px; font-weight: 600; color: rgba(255,255,255,0.85);
       letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap;
     }
+
+    /* TNF badge (mobile) */
+    .m-tnf-badge {
+      position: absolute; top: 8px; right: 10px;
+      z-index: 10;
+    }
+    .m-tnf-badge img { height: 28px; object-fit: contain; }
 
     /* Touchdown (mobile) */
     .td-banner {
@@ -1160,6 +1170,31 @@
     }
 
     .game-desc { font-size: 13px; color: #999; line-height: 1.6; margin-top: 10px; }
+
+    /* Mobile play notification (in content area) */
+    .m-play-notif {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(20,20,20,0.95);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid #241773;
+      border-radius: 6px;
+      padding: 10px 12px;
+      margin-top: 12px;
+    }
+    .m-play-notif-icon {
+      width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+      background: linear-gradient(135deg, #241773, #3d1f8a);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .m-play-notif-text { flex: 1; min-width: 0; }
+    .m-play-notif-headline { font-size: 13px; font-weight: 600; color: #fff; line-height: 1.3; }
+    .m-play-notif-sub { font-size: 11px; color: #999; margin-top: 2px; }
+    .m-play-notif-tag {
+      font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: #fff; background: #9E7C0C; border: 1px solid #c9a020;
+      border-radius: 3px; padding: 3px 7px; white-space: nowrap; flex-shrink: 0;
+    }
 
     /* Fullscreen overlay (shown only in fullscreen) */
     .fs-overlay {
@@ -1764,16 +1799,14 @@
           <div class="td-sub">Lamar Jackson → Zay Flowers · 24 yd</div>
         </div>
 
+        <!-- TNF badge (always visible in video) -->
+        <div class="m-tnf-badge">
+          <img src="/brand_assets/thursday-night-football.png" alt="Thursday Night Football">
+        </div>
+
         <!-- Fullscreen overlay (controls + persona, only active in fullscreen) -->
         <div class="fs-overlay" id="fsOverlay">
-          <div class="fs-top">
-            <div class="fs-exit-btn" onclick="toggleFullscreen()">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round">
-                <polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/>
-                <line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/>
-              </svg>
-            </div>
-          </div>
+          <div class="fs-top"></div>
           <div class="fs-mid">
             <div class="fs-skip-wrap">
               <div class="fs-ctrl">
@@ -1876,7 +1909,14 @@
           <div class="live-pill">Live</div>
           <div class="game-info-title">Baltimore Ravens vs. Cincinnati Bengals</div>
           <div class="game-info-meta">Thursday Night Football · Week 13 · Amazon Prime Video</div>
-          <div class="game-desc">Lamar Jackson leads the Ravens on a 4th-quarter drive, capping a 24-yard TD pass to Zay Flowers to extend the lead to 23–17.</div>
+          <div class="m-play-notif">
+            <div class="m-play-notif-icon">⚡</div>
+            <div class="m-play-notif-text">
+              <div class="m-play-notif-headline">Lamar Jackson finds Zay Flowers for the TD</div>
+              <div class="m-play-notif-sub">Ravens take a 6-point lead in the 4th quarter</div>
+            </div>
+            <div class="m-play-notif-tag">TD · 24 YDS</div>
+          </div>
         </div>
 
       </div>
@@ -2072,7 +2112,7 @@
 
     </div><!-- /.app (mobile) -->
 
-    <div class="demo-badge"><span>Prime Persona</span> · Mobile Demo</div>
+    <div class="demo-badge"><span>Prime Persona</span> · Interactive Demo</div>
   </div><!-- /#mobile-demo -->
 
 
