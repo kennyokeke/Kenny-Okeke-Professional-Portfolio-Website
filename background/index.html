@@ -383,7 +383,8 @@
       height: 3px;
       background: linear-gradient(90deg, var(--amber), var(--amber-2));
     }
-    .honors-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+    .honors-card { cursor: pointer; }
+    .honors-card:hover, .honors-card.active { transform: translateY(-3px); box-shadow: var(--shadow); }
     .honors-school {
       font-size: 11px;
       font-weight: 500;
@@ -418,12 +419,31 @@
       color: var(--charcoal);
       line-height: 1.3;
     }
-    .honors-detail {
+    .honors-desc {
       font-size: 12px;
       color: var(--stone);
       font-weight: 400;
-      margin-top: 3px;
-      line-height: 1.5;
+      line-height: 1.6;
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.35s ease, opacity 0.3s ease, margin-top 0.3s ease;
+      margin-top: 0;
+    }
+    @media (hover: hover) {
+      .honors-card:hover .honors-desc { max-height: 80px; opacity: 1; margin-top: 5px; }
+      .honors-card:hover .honors-hint { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+    }
+    .honors-card.active .honors-desc { max-height: 80px; opacity: 1; margin-top: 5px; }
+    .honors-card.active .honors-hint { opacity: 0; height: 0; margin: 0; overflow: hidden; }
+    .honors-hint {
+      font-size: 11px;
+      color: var(--amber-2);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
     }
     @media (max-width: 900px) {
       .honors-grid { grid-template-columns: 1fr; }
@@ -578,6 +598,7 @@
         <div class="about-section-inner">
           <h2 class="about-section-label reveal">Education</h2>
           <div class="reveal reveal-delay-1">
+            <p class="honors-subheader">Institutions</p>
             <div class="edu-grid">
               <div class="edu-card edu-card-ut edu-card-expandable" tabindex="0">
                 <div class="edu-icon edu-icon-ut" style="overflow:visible;"><img src="/brand_assets/Texas_Longhorns_logo.svg.png" alt="UT Austin" style="transform:scale(2.1);"></div>
@@ -636,27 +657,29 @@
             <div class="honors-grid">
 
               <!-- UT Austin -->
-              <div class="honors-card">
+              <div class="honors-card" tabindex="0">
                 <p class="honors-school">The University of Texas at Austin</p>
                 <img class="honors-img" src="/brand_assets/bgs-member-badge.png" alt="Beta Gamma Sigma Member Badge">
                 <div class="honors-item">
                   <p class="honors-name">Beta Gamma Sigma</p>
-                  <p class="honors-detail">National Honor Society · Top 20% of MBA Class</p>
+                  <p class="honors-desc">The premier honor society in business. Membership is limited to the top 20% of MBA students at AACSB-accredited schools worldwide.</p>
                 </div>
+                <p class="honors-hint">Hover or tap to learn more</p>
               </div>
 
               <!-- University of Alberta -->
-              <div class="honors-card">
+              <div class="honors-card" tabindex="0">
                 <p class="honors-school">The University of Alberta</p>
                 <img class="honors-school-icon" src="/brand_assets/uofa_engineering_logo.png" alt="University of Alberta Engineering">
                 <div class="honors-item">
-                  <p class="honors-name">Graduated With Distinction</p>
-                  <p class="honors-detail">Engineering Graduation Average ≥ 3.5</p>
+                  <p class="honors-name">With Distinction</p>
+                  <p class="honors-desc">Inscribed on the degree parchment for an Engineering Graduation Average (EGA) of 3.5 or greater.</p>
                 </div>
                 <div class="honors-item">
                   <p class="honors-name">First-Class Standing</p>
-                  <p class="honors-detail">GPA ≥ 3.5 across qualifying academic terms</p>
+                  <p class="honors-desc">Awarded for a GPA of 3.5 or greater across a minimum of 35 course units in preceding academic terms.</p>
                 </div>
+                <p class="honors-hint">Hover or tap to learn more</p>
               </div>
 
             </div>
@@ -773,6 +796,9 @@
       card.addEventListener('click', () => card.classList.toggle('active'));
     });
     document.querySelectorAll('.edu-card-expandable').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('active'));
+    });
+    document.querySelectorAll('.honors-card').forEach(card => {
       card.addEventListener('click', () => card.classList.toggle('active'));
     });
 
